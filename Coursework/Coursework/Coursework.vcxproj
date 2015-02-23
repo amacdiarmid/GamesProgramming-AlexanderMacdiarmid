@@ -16,6 +16,8 @@
     <ClInclude Include="cWNDManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameConstants.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="rock.h" />
     <ClInclude Include="wglext.h" />
     <ClInclude Include="windowOGL.h" />
   </ItemGroup>
@@ -25,6 +27,8 @@
     <ClCompile Include="cWNDManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="player.cpp" />
+    <ClCompile Include="rock.cpp" />
     <ClCompile Include="windowOGL.cpp" />
   </ItemGroup>
   <ItemGroup>

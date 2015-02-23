@@ -8,12 +8,13 @@
 #include "windowOGL.h"
 #include "GameConstants.h"
 #include "cWNDManager.h"
+#include <list>
+#include "player.h"
 
-int WINAPI WinMain(HINSTANCE hInstance,
-                   HINSTANCE hPrevInstance,
-                   LPSTR cmdLine,
-                   int cmdShow)
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int cmdShow)
 {
+	//main variables
+	public std::list<player> players;
 
     //Set our window settings
     const int windowWidth = 1024;
