@@ -9,8 +9,8 @@ rock::rock()
 }
 rock::rock(float Tangle, float Tpower)
 {
-	angle == Tangle;
-	power == Tpower;
+	angle = Tangle;
+	power = Tpower;
 	calculateArc();
 }
 
@@ -26,8 +26,7 @@ void rock::calculateArc()
 	//equations taken from a higher physics book and converted into C++ by Alexander MacDiarmid
 	float finalSpeed = pow((power*sin(angle)),2);
 
-	maxHeight = (0 - finalSpeed) / (2 * 9.8);
-	time = (0 - finalSpeed) / 9.8;
+	maxHeight = (0 - finalSpeed) / (2 * 9.8f);
+	time = (0 - finalSpeed) / 9.8f;
 	range = finalSpeed * time;
-	//oh god i hope this works
 }

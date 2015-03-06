@@ -117,6 +117,11 @@ void cWNDManager::attachOGLWnd(windowOGL* OGLWindow)
 	m_winOGL = OGLWindow;
 }
 
+void cWNDManager::attachInputMgr(cInputMgr* inputMgr)
+{
+	m_InputMgr = inputMgr;
+}
+
 bool cWNDManager::isWNDRunning()
 {
 	return m_isRunning;

@@ -1,6 +1,6 @@
-#include "player.h";
+#include "player.h"
 #include "rock.h"
-#include <iostream>;
+#include <iostream>
 using namespace std;
 
 //constructor

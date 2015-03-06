@@ -1,7 +1,7 @@
 #pragma once
 #ifndef _ROCK_H
 #define _ROCK_H
-#include <string>;
+#include <string>
 using namespace std;
 
 class rock

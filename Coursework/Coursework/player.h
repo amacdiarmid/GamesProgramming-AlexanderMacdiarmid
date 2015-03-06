@@ -1,7 +1,7 @@
 #pragma once
 #ifndef _PLAYER_H
 #define _PLAYER_H
-#include <string>;
+#include <string>
 using namespace std;
 
 class player

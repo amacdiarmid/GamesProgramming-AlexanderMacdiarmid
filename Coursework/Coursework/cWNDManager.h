@@ -3,10 +3,15 @@
 cWNDManager.h
 ==========================================================================
 */
+
+
 #pragma once
+#ifndef _WNDMANAGER_H
+#define _WNDMANAGER_H
 
 #include <windows.h>
 #include "windowOGL.h"
+#include "cInputMgr.h"
 
 class cWNDManager
 {
@@ -18,6 +23,7 @@ public:
 	void destroyWND();
 	void processWNDEvents();
 	void attachOGLWnd(windowOGL* winOGL);
+	void attachInputMgr(cInputMgr* inputMgr);
 
 	bool isWNDRunning(); //Is the window running?
 
@@ -34,7 +40,11 @@ public:
 
 private:
 	static cWNDManager* pInstance;
+
 	windowOGL* m_winOGL; //A link to the OGL window
+
+	cInputMgr* m_InputMgr; //A link to the Input Manager
+
 	bool m_isRunning; //Is the window still running?
 
 	HGLRC m_hglrc; //Rendering context
@@ -50,3 +60,4 @@ private:
 	HWND m_hwnd; //Window handle
 	HDC m_hdc; //Device context
 };
+#endif

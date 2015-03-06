@@ -1,28 +1,26 @@
-﻿Build started 19/02/2015 23:03:35.
-     1>Project "C:\Users\Alex\Documents\uni\2nd year\Games programming\CW\GamesProgramming-AlexanderMacdiarmid\Coursework\Coursework\Coursework.vcxproj" on node 2 (Build target(s)).
+﻿Build started 05/03/2015 20:57:32.
+     1>Project "C:\Users\Alex\Documents\uni\2nd year\Games programming\GamesProgramming-AlexanderMacdiarmid\Coursework\Coursework\Coursework.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt cSprite.cpp cTexture.cpp cWNDManager.cpp Game.cpp main.cpp windowOGL.cpp
-         windowOGL.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
-         Game.cpp
-         cWNDManager.cpp
-         cTexture.cpp
-         cSprite.cpp
-         Generating Code...
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Alex\Documents\uni\2nd year\Games programming\CW\GamesProgramming-AlexanderMacdiarmid\Coursework\Debug\Coursework.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Alex\Documents\uni\2nd year\Games programming\CW\GamesProgramming-AlexanderMacdiarmid\Coursework\Debug\Coursework.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Alex\Documents\uni\2nd year\Games programming\CW\GamesProgramming-AlexanderMacdiarmid\Coursework\Debug\Coursework.lib" /MACHINE:X86 Debug\cSprite.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Alex\Documents\uni\2nd year\Games programming\GamesProgramming-AlexanderMacdiarmid\Coursework\Debug\Coursework.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Alex\Documents\uni\2nd year\Games programming\GamesProgramming-AlexanderMacdiarmid\Coursework\Debug\Coursework.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Alex\Documents\uni\2nd year\Games programming\GamesProgramming-AlexanderMacdiarmid\Coursework\Debug\Coursework.lib" /MACHINE:X86 Debug\cBkGround.obj
+         Debug\cInputMgr.obj
+         Debug\cSprite.obj
          Debug\cTexture.obj
          Debug\cWNDManager.obj
          Debug\Game.obj
          Debug\main.obj
+         Debug\player.obj
+         Debug\rock.obj
          Debug\windowOGL.obj
          Libraries\DevIL.lib
          Libraries\freeglut.lib
          Libraries\ILU.lib
          Libraries\ILUT.lib
-         Coursework.vcxproj -> C:\Users\Alex\Documents\uni\2nd year\Games programming\CW\GamesProgramming-AlexanderMacdiarmid\Coursework\Debug\Coursework.exe
-     1>Done Building Project "C:\Users\Alex\Documents\uni\2nd year\Games programming\CW\GamesProgramming-AlexanderMacdiarmid\Coursework\Coursework\Coursework.vcxproj" (Build target(s)).
+         Coursework.vcxproj -> C:\Users\Alex\Documents\uni\2nd year\Games programming\GamesProgramming-AlexanderMacdiarmid\Coursework\Debug\Coursework.exe
+     1>Done Building Project "C:\Users\Alex\Documents\uni\2nd year\Games programming\GamesProgramming-AlexanderMacdiarmid\Coursework\Coursework\Coursework.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:04.73
+Time Elapsed 00:00:00.97

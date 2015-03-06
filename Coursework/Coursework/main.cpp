@@ -8,27 +8,36 @@
 #include "windowOGL.h"
 #include "GameConstants.h"
 #include "cWNDManager.h"
-#include <list>
+#include "cInputMgr.h"
+#include "cSprite.h"
+#include "cBkGround.h"
 #include "player.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int cmdShow)
 {
 	//main variables
-	public std::list<player> players;
+	int difficulty = 1;
+	LPCSTR wallToUse[] = { "wall texture easy.png", "wall texture medium.png", "wall texture hard.png" };
 
     //Set our window settings
     const int windowWidth = 1024;
     const int windowHeight = 768;
-    const int windowBPP = 16;
+	const int windowBPP = 16;
 
     //This is our window
 	static cWNDManager* pgmWNDMgr = cWNDManager::getInstance();
 
+	// This is the input manager
+	static cInputMgr* theInputMgr = cInputMgr::getInstance();
+
     //The example OpenGL code
-    windowOGL theOGLWnd;
+    windowOGL theOGLWnd;	
 
     //Attach our example to our window
 	pgmWNDMgr->attachOGLWnd(&theOGLWnd);
+
+	// Attach the keyboard manager
+	pgmWNDMgr->attachInputMgr(theInputMgr);
 
     //Attempt to create the window
 	if (!pgmWNDMgr->createWND(windowWidth, windowHeight, windowBPP))
@@ -46,7 +55,41 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
         return 1;
     }
 
-	cSprite cardSprite;
+	//Clear key buffers
+	theInputMgr->clearBuffers(theInputMgr->KEYS_DOWN_BUFFER | theInputMgr->KEYS_PRESSED_BUFFER);
+
+	//create textures
+	//background
+	cTexture textureBkgd;
+	textureBkgd.createTexture("background.png");
+	cBkGround spriteBkgd;
+	spriteBkgd.setSpritePos(glm::vec2(0.0f, 0.0f));
+	spriteBkgd.setTexture(textureBkgd.getTexture());
+	spriteBkgd.setTextureDimensions(textureBkgd.getTWidth(), textureBkgd.getTHeight());
+
+	//wall
+	cTexture textureWall;
+	textureWall.createTexture("wall texture easy.png");
+	cSprite spriteWall;
+	spriteWall.setSpritePos(glm::vec2((windowWidth / 2) - (textureWall.getTWidth() / 2), windowHeight - textureWall.getTHeight()));
+	spriteWall.setTexture(textureWall.getTexture());
+	spriteWall.setTextureDimensions(textureWall.getTWidth(), textureWall.getTHeight());
+
+	//player 1
+	cTexture textureP1;
+	textureP1.createTexture("man texture.png");
+	cSprite spriteP1;
+	spriteP1.setSpritePos(glm::vec2((windowWidth / 4) - (textureP1.getTWidth() / 2), windowHeight - textureP1.getTHeight() / 3));
+	spriteP1.setTexture(textureP1.getTexture());
+	spriteP1.setTextureDimensions(textureP1.getTWidth() / 3, textureP1.getTHeight() / 3);
+
+	//players 2
+	cTexture textureP2;
+	textureP2.createTexture("man texture.png");
+	cSprite spriteP2;
+	spriteP2.setSpritePos(glm::vec2(((windowWidth / 4) * 3) - (textureP2.getTWidth() / 2), windowHeight - textureP2.getTHeight() / 3));
+	spriteP2.setTexture(textureP2.getTexture());
+	spriteP2.setTextureDimensions(textureP2.getTWidth() / 3, textureP2.getTHeight() / 3);
 
     //This is the mainloop, we render frames until isRunning returns false
 	while (pgmWNDMgr->isWNDRunning())
@@ -57,6 +100,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 		float elapsedTime = pgmWNDMgr->getElapsedSeconds();
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		spriteBkgd.render();
+		spriteWall.render();
+		spriteP1.render();
+		spriteP2.render();
+
 
 		//game->render();
 

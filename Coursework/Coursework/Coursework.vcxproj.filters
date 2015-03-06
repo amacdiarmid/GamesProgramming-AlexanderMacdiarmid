@@ -42,6 +42,12 @@
     <ClInclude Include="rock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cInputMgr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cBkGround.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cSprite.cpp">
@@ -68,11 +74,40 @@
     <ClCompile Include="rock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cInputMgr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cBkGround.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="Libraries\DevIL.lib" />
     <Library Include="Libraries\freeglut.lib" />
     <Library Include="Libraries\ILU.lib" />
     <Library Include="Libraries\ILUT.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="background.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="man texture.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="rock texture.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="arrow texture.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="wall texture easy.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="wall texture hard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="wall texture medium.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
