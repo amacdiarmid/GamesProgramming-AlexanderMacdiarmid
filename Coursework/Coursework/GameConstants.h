@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _GAMECONSTANTS_H
+#define _GAMECONSTANTS_H
 
 // Windows & OpenGL 
 #include <stdlib.h>
@@ -29,9 +30,13 @@
 #include <algorithm>
 // Textures & Sprites
 #include "cTexture.h"
-#include "cSprite.h"
+//#include "cSprite.h"
 
 using namespace std;
 
 //Define the string to appear in the top left corner of the window
-#define WINDOW_TITLE "Two hoodlums in a valley"
+#define WINDOW_TITLE "Two hoodlums over the wall!"
+
+// This header file contains all the constants & enumarated types for the game
+
+#endif

@@ -5,9 +5,11 @@ cSprite.h
 - Header file for the Sprite class
 =================
 */
-#pragma once
-
+#ifndef _CSPRITE_H
+#define _CSPRITE_H
+#include "cInputMgr.h"
 #include "GameConstants.h"
+#include "player.h"
 
 class cSprite
 {
@@ -30,8 +32,9 @@ private:
 	int textureWidth;
 	int textureHeight;
 	GLuint GLTextureID;
+	cInputMgr* m_InputMgr;
+	player playerInfo;
 
-	//cD3DXTexture spriteTexture;
 public:
 	cSprite();			// Default constructor
 	//cSprite(glm::vec3 sPosition, LPDIRECT3DDEVICE9 pd3dDevice, LPCSTR theFilename); // Constructor
@@ -40,8 +43,13 @@ public:
 	void setSpriteTexCoordData();
 	glm::vec2 getSpritePos();  // Return the sprites current position
 	void setSpritePos(glm::vec2 sPosition); // set the position of the sprite
-	//LPDIRECT3DTEXTURE9 getTexture();  // Return the sprites current image
+	GLuint getTexture();  // Return the sprites current image
 	void setTexture(GLuint GLtexID);  // set the image of the sprite
 	void setTextureDimensions(int texWidth, int textHeight);
-
+	void setSpriteTranslation(glm::vec2 translation); // Set the amount of movement on the x & y axis
+	glm::vec2 getSpriteTranslation();  // return the amount of movement on the x & y axis
+	void attachInputMgr(cInputMgr* inputMgr);  // Attach the Input Manager
+	void attatchPlayerObject(player tPlayer); //attatch the player infomation
+	void update();
 };
+#endif
