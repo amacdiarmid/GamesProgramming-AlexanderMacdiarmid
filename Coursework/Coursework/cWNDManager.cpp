@@ -12,7 +12,6 @@ cWNDManager.cpp
 #include "wglext.h"
 #include "windowOGL.h"
 #include "GameConstants.h"
-#include "Game.h"
 
 cWNDManager* cWNDManager::pInstance = NULL;
 
@@ -223,7 +222,7 @@ LRESULT CALLBACK cWNDManager::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 
 		pInstance->m_isRunning = true; //Mark our window as running
 	}
-		break;
+	break;
 	case WM_DESTROY: // window destroy
 	case WM_CLOSE: // windows is closing
 		wglMakeCurrent(pInstance->m_hdc, NULL);
@@ -238,15 +237,18 @@ LRESULT CALLBACK cWNDManager::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 		int width = LOWORD(lParam);
 		pInstance->getAttachedWND()->onResize(width, height); //Call the example's resize method
 	}
-		break;
+	break;
 	case WM_KEYDOWN:
 	{
 		if (wParam == VK_ESCAPE) //If the escape key was pressed
 		{
 			DestroyWindow(pInstance->m_hwnd); //Send a WM_DESTROY message
 		}
+		pInstance->m_InputMgr->keyDown(wParam);
+		return 0;
 	}
-		break;
+
+	break;
 	default:
 		break;
 	}

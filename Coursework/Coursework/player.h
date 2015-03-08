@@ -2,6 +2,10 @@
 #ifndef _PLAYER_H
 #define _PLAYER_H
 #include <string>
+#include <iostream>
+#include "cSprite.h"
+#include "cInputMgr.h"
+#include "rock.h"
 using namespace std;
 
 class player
@@ -12,6 +16,11 @@ private:
 	int health;					//the players current health
 	float angle;				//the current set angle
 	float power;				//the current set power
+	glm::vec2 playerSpeed;
+	float playerRotation;
+	cInputMgr* m_InputMgr;
+	cSprite playerSprite;
+	cSprite arrowSprite;
 
 public:
 	//constructor
@@ -28,11 +37,21 @@ public:
 	void messagePlayerWin(string);	//display message on player win
 	void messagePlayerHit(string);	//display message on player hit
 
+	//update
+	void update();			//the player Update
+
+	//attach
+	void attachInputMgr(cInputMgr* inputMgr);
+	void attachPlayerSprite(cSprite sprite);
+	void attatchArrowSprite(cSprite sprite);
+
 	//action methods
-	void adjustAngle();			//change the current angle up/down
-	void adjustPower();			//change the current power higher/lower
-	void throwRock();			//throw the rock
-	void movePlayer();			//move the player left/right
-	
+	void angleUp();			//change the current angle up/down
+	void angleDown();
+	void powerUp();			//change the current power higher/lower
+	void powerDown();
+	void moveLeft();		//move the player left/right
+	void moveRight();			
+	void throwRock();		//throw rock
 };
 #endif

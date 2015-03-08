@@ -30,10 +30,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	// This is the input manager
 	static cInputMgr* theInputMgr = cInputMgr::getInstance();
 
-	//declare player objects
-	static player player1 = player::player("alex");
-	static player player2 = player::player("not alex");
-
     //The example OpenGL code
     windowOGL theOGLWnd;	
 
@@ -80,16 +76,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	spriteWall.setTextureDimensions(textureWall.getTWidth(), textureWall.getTHeight());
 
 	//player 1
+	
 	cTexture textureP1;
 	textureP1.createTexture("man texture.png");
 	cSprite spriteP1;
 	spriteP1.setSpritePos(glm::vec2((windowWidth / 4) - (textureP1.getTWidth() / 2), windowHeight - textureP1.getTHeight()));
 	spriteP1.setTexture(textureP1.getTexture());
 	spriteP1.setTextureDimensions(textureP1.getTWidth(), textureP1.getTHeight());
-	spriteP1.attachInputMgr(theInputMgr);
-	spriteP1.attatchPlayerObject(player1);
+	player player1 = player::player("alex");
+	player1.attachInputMgr(theInputMgr);
+	player1.attachPlayerSprite(spriteP1);
 
+	/*
 	//players 2
+	static player player2 = player::player("not alex");
 	cTexture textureP2;
 	textureP2.createTexture("man texture.png");
 	cSprite spriteP2;
@@ -98,6 +98,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	spriteP2.setTextureDimensions(textureP2.getTWidth(), textureP2.getTHeight());
 	spriteP2.attachInputMgr(theInputMgr);
 	spriteP2.attatchPlayerObject(player2);
+	*/
 
     //This is the mainloop, we render frames until isRunning returns false
 	while (pgmWNDMgr->isWNDRunning())
@@ -109,19 +110,22 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		//player updaters
-		spriteP1.update();
-		spriteP2.update();
-		//sprite renderers
 		spriteBkgd.render();
 		spriteWall.render();
+		
+		//player 1
+		player1.update();
 		spriteP1.render();
-		spriteP2.render();
+
+		//player 2 renderers
+		//spriteP2.update();
+		//spriteP2.render();
 
 
 		//game->render();
 
 		pgmWNDMgr->swapBuffers();
+		theInputMgr->clearBuffers(theInputMgr->KEYS_DOWN_BUFFER | theInputMgr->KEYS_PRESSED_BUFFER);
     }
 
 	theOGLWnd.shutdown(); //Free any resources

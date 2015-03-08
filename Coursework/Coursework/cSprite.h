@@ -9,7 +9,6 @@ cSprite.h
 #define _CSPRITE_H
 #include "cInputMgr.h"
 #include "GameConstants.h"
-#include "player.h"
 
 class cSprite
 {
@@ -32,8 +31,6 @@ private:
 	int textureWidth;
 	int textureHeight;
 	GLuint GLTextureID;
-	cInputMgr* m_InputMgr;
-	player playerInfo;
 
 public:
 	cSprite();			// Default constructor
@@ -48,8 +45,5 @@ public:
 	void setTextureDimensions(int texWidth, int textHeight);
 	void setSpriteTranslation(glm::vec2 translation); // Set the amount of movement on the x & y axis
 	glm::vec2 getSpriteTranslation();  // return the amount of movement on the x & y axis
-	void attachInputMgr(cInputMgr* inputMgr);  // Attach the Input Manager
-	void attatchPlayerObject(player tPlayer); //attatch the player infomation
-	void update();
 };
 #endif
