@@ -119,13 +119,18 @@ void player::powerDown()
 }
 void player::moveLeft()
 {
-	playerSprite.setSpritePos(playerSprite.getSpritePos() -= playerSpeed);
+	playerSprite.setSpritePos(playerSprite.getSpritePos() - playerSpeed);
 }
 void player::moveRight()
 {
-	playerSprite.setSpritePos(playerSprite.getSpritePos() += playerSpeed);
+	playerSprite.setSpritePos(playerSprite.getSpritePos() + playerSpeed);
 }
 void player::throwRock()
 {
 
+}
+
+void player::render()
+{
+	playerSprite.render();
 }

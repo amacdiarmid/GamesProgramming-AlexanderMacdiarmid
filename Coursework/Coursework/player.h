@@ -39,6 +39,7 @@ public:
 
 	//update
 	void update();			//the player Update
+	void render();
 
 	//attach
 	void attachInputMgr(cInputMgr* inputMgr);

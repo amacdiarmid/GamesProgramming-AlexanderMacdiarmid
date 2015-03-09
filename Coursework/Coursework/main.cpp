@@ -115,7 +115,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 		
 		//player 1
 		player1.update();
-		spriteP1.render();
+		player1.render();
 
 		//player 2 renderers
 		//spriteP2.update();
