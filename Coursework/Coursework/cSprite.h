@@ -13,13 +13,14 @@ cSprite.h
 class cSprite
 {
 private:
+	static cSprite* pInstance;
 	// position, rotation, scalling
 	glm::vec2 spritePos2D;
 	glm::vec2 spriteTranslation;
 	glm::vec2 spriteCentre;
 	glm::vec2 spriteScaling;
-	float spriteScalingRotation;
 	float spriteRotation;
+	float spriteScalingRotation;	
 	glm::mat4x4 spriteTransformMatrix;
 	RECT boundingRect;
 
@@ -33,6 +34,7 @@ private:
 	GLuint GLTextureID;
 
 public:
+	static cSprite* getInstance(); //constructor from pointer
 	cSprite();			// Default constructor
 	//cSprite(glm::vec3 sPosition, LPDIRECT3DDEVICE9 pd3dDevice, LPCSTR theFilename); // Constructor
 	~cSprite();			// Destructor
@@ -45,5 +47,9 @@ public:
 	void setTextureDimensions(int texWidth, int textHeight);
 	void setSpriteTranslation(glm::vec2 translation); // Set the amount of movement on the x & y axis
 	glm::vec2 getSpriteTranslation();  // return the amount of movement on the x & y axis
+	void setSpriteCentre(); // Set the sprites centre point
+	glm::vec2 getSpriteCentre();  // return the sprites centre point
+	void setSpriteRotaion(float rotation); //rotate the sprite 
+
 };
 #endif

@@ -2,9 +2,10 @@
 #ifndef _ROCK_H
 #define _ROCK_H
 #include <string>
+#include "cSprite.h"
 using namespace std;
 
-class rock
+class rock : public cSprite
 {
 private:
 	float angle;			//the angle the rock was launched at

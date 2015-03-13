@@ -8,7 +8,7 @@
 #include "rock.h"
 using namespace std;
 
-class player
+class player : public cSprite
 {
 private:
 	string playerName;			// name of the player
@@ -19,8 +19,7 @@ private:
 	glm::vec2 playerSpeed;
 	float playerRotation;
 	cInputMgr* m_InputMgr;
-	cSprite playerSprite;
-	cSprite arrowSprite;
+	cSprite* arrowSprite;
 
 public:
 	//constructor
@@ -39,12 +38,10 @@ public:
 
 	//update
 	void update();			//the player Update
-	void render();
 
 	//attach
 	void attachInputMgr(cInputMgr* inputMgr);
-	void attachPlayerSprite(cSprite sprite);
-	void attatchArrowSprite(cSprite sprite);
+	void attachArrowSprite(cSprite* sprite);
 
 	//action methods
 	void angleUp();			//change the current angle up/down

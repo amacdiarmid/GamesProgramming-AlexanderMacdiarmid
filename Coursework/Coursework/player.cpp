@@ -38,7 +38,7 @@ string player::getName()
 //message methods
 void player::messagePlayerWin(string name)
 {
-		cout << playerName << " killed " << name << endl;
+	cout << playerName << " killed " << name << endl;
 }
 void player::messagePlayerHit(string name)
 {
@@ -50,11 +50,7 @@ void player::attachInputMgr(cInputMgr* inputMgr)
 {
 	m_InputMgr = inputMgr;
 }
-void player::attachPlayerSprite(cSprite sprite)
-{
-	playerSprite = sprite;
-}
-void player::attatchArrowSprite(cSprite sprite)
+void player::attachArrowSprite(cSprite* sprite)
 {
 	arrowSprite = sprite;
 }
@@ -63,20 +59,20 @@ void player::attatchArrowSprite(cSprite sprite)
 void player::update()
 {
 	//move left and right 
-	if (m_InputMgr->isKeyDown(VK_RIGHT))
+	if (m_InputMgr->isKeyDown('D'))
 	{
 		moveRight();
 	}
-	if (m_InputMgr->isKeyDown(VK_LEFT))
+	if (m_InputMgr->isKeyDown('A'))
 	{
 		moveLeft();
 	}
 	//adjust angle
-	if (m_InputMgr->isKeyDown(VK_UP))
+	if (m_InputMgr->isKeyDown('W'))
 	{
 		angleUp();
 	}
-	if (m_InputMgr->isKeyDown(VK_DOWN))
+	if (m_InputMgr->isKeyDown('S'))
 	{
 		angleDown();
 	}
@@ -99,13 +95,11 @@ void player::update()
 //action methods
 void player::angleUp()
 {
-	//if the input is positive add to the angle
-	//else take away from the angle
+	arrowSprite->setSpriteRotaion(5.0f);
 }
 void player::angleDown()
 {
-	//if the input is posative then add to the power
-	//else take away from the power
+	arrowSprite->setSpriteRotaion(-5.0f);
 }
 void player::powerUp()
 {
@@ -119,18 +113,15 @@ void player::powerDown()
 }
 void player::moveLeft()
 {
-	playerSprite.setSpritePos(playerSprite.getSpritePos() - playerSpeed);
+	setSpritePos(getSpritePos() - playerSpeed);
+	arrowSprite->setSpritePos(arrowSprite->getSpritePos() - playerSpeed);
 }
 void player::moveRight()
 {
-	playerSprite.setSpritePos(playerSprite.getSpritePos() + playerSpeed);
+	setSpritePos(getSpritePos() + playerSpeed);
+	arrowSprite->setSpritePos(arrowSprite->getSpritePos() + playerSpeed);
 }
 void player::throwRock()
 {
 
-}
-
-void player::render()
-{
-	playerSprite.render();
 }

@@ -5,6 +5,9 @@ cSprite.cpp
 =================
 */
 #include "cSprite.h"
+
+cSprite* cSprite::pInstance = NULL;
+
 /*
 =================
 - Data constructor initializes the cSprite to the data passed to
@@ -12,6 +15,15 @@ cSprite.cpp
 - Is always called, thus ensures all sprite objects are in a consistent state.
 =================
 */
+cSprite* cSprite::getInstance()
+{
+	if (pInstance == NULL)
+	{
+		pInstance = new cSprite();
+	}
+	return cSprite::pInstance;
+}
+
 cSprite::cSprite() 			// Default constructor
 {
 
@@ -140,4 +152,20 @@ void cSprite::setTextureDimensions(int texWidth, int textHeight)
 {
 	textureWidth = texWidth;
 	textureHeight = textHeight;
+}
+
+void cSprite::setSpriteCentre()
+{
+	spriteCentre.x = getSpritePos().x + (textureWidth / 2);
+	spriteCentre.y = getSpritePos().y + (textureHeight / 2);
+}
+
+glm::vec2 cSprite::getSpriteCentre()
+{
+	return spriteCentre;
+}
+
+void cSprite::setSpriteRotaion(float rotation)
+{
+	spriteRotation += rotation;
 }

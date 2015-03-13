@@ -75,17 +75,26 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	spriteWall.setTexture(textureWall.getTexture());
 	spriteWall.setTextureDimensions(textureWall.getTWidth(), textureWall.getTHeight());
 
-	//player 1
-	
-	cTexture textureP1;
-	textureP1.createTexture("man texture.png");
-	cSprite spriteP1;
-	spriteP1.setSpritePos(glm::vec2((windowWidth / 4) - (textureP1.getTWidth() / 2), windowHeight - textureP1.getTHeight()));
-	spriteP1.setTexture(textureP1.getTexture());
-	spriteP1.setTextureDimensions(textureP1.getTWidth(), textureP1.getTHeight());
+	//create textures	
+	//player
+	cTexture playerText;
+	playerText.createTexture("man texture.png");
+	//arrow
+	cTexture playerArrow;
+	playerArrow.createTexture("arrow texture.png");
+
+	//create player 1
 	player player1 = player::player("alex");
+	player1.setSpritePos(glm::vec2((windowWidth / 4) - (playerText.getTWidth() / 2), windowHeight - playerText.getTHeight()));
+	player1.setTexture(playerText.getTexture());
+	player1.setTextureDimensions(playerText.getTWidth(), playerText.getTHeight());
 	player1.attachInputMgr(theInputMgr);
-	player1.attachPlayerSprite(spriteP1);
+	player1.setSpriteCentre();
+	cSprite* arrowP1 = cSprite::getInstance();
+	arrowP1->setSpritePos(glm::vec2(player1.getSpriteCentre().x - (playerArrow.getTWidth() / 2), player1.getSpriteCentre().y - (playerArrow.getTHeight() + 100)));
+	arrowP1->setTexture(playerArrow.getTexture());
+	arrowP1->setTextureDimensions(playerArrow.getTWidth(), playerArrow.getTHeight());
+	player1.attachArrowSprite(arrowP1);
 
 	/*
 	//players 2
@@ -116,6 +125,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 		//player 1
 		player1.update();
 		player1.render();
+		arrowP1->render();
 
 		//player 2 renderers
 		//spriteP2.update();

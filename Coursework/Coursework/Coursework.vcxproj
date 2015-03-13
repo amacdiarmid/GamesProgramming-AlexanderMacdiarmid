@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="arrow.h" />
     <ClInclude Include="cBkGround.h" />
     <ClInclude Include="cInputMgr.h" />
     <ClInclude Include="cSprite.h" />
@@ -23,6 +24,7 @@
     <ClInclude Include="windowOGL.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="arrow.cpp" />
     <ClCompile Include="cBkGround.cpp" />
     <ClCompile Include="cInputMgr.cpp" />
     <ClCompile Include="cSprite.cpp" />
