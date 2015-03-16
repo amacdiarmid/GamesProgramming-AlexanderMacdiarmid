@@ -11,8 +11,9 @@ protected:
 
 public:
 	arrow();
+	arrow(glm::vec2 playerCen);
 	~arrow();
 	void render();
-	void setSpriteRotaion(float rotation, glm::vec2 platerCen);
+	void setSpriteRotaion(float rotation, glm::vec2 playerCen);
 };
 #endif

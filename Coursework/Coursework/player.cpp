@@ -68,9 +68,10 @@ void player::attachArrowSprite()
 	cTexture playerArrow;
 	playerArrow.createTexture("arrow texture.png");
 	arrow arrowP1;
-	arrowP1.setSpritePos(glm::vec2(getSpriteCentre().x - (playerArrow.getTWidth() / 2), getSpriteCentre().y - (playerArrow.getTHeight() + 100)));
+	arrowP1.setSpritePos(glm::vec2(getSpriteCentre().x, getSpriteCentre().y + 100.0f));
 	arrowP1.setTexture(playerArrow.getTexture());
 	arrowP1.setTextureDimensions(playerArrow.getTWidth(), playerArrow.getTHeight());
+	arrowP1.setSpriteCentre();
 	arrowSprite = arrowP1;
 }
 
