@@ -79,22 +79,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	//player
 	cTexture playerText;
 	playerText.createTexture("man texture.png");
-	//arrow
-	cTexture playerArrow;
-	playerArrow.createTexture("arrow texture.png");
 
 	//create player 1
 	player player1 = player::player("alex");
+	player1.attachInputMgr(theInputMgr);
 	player1.setSpritePos(glm::vec2((windowWidth / 4) - (playerText.getTWidth() / 2), windowHeight - playerText.getTHeight()));
 	player1.setTexture(playerText.getTexture());
 	player1.setTextureDimensions(playerText.getTWidth(), playerText.getTHeight());
-	player1.attachInputMgr(theInputMgr);
 	player1.setSpriteCentre();
-	cSprite* arrowP1 = cSprite::getInstance();
-	arrowP1->setSpritePos(glm::vec2(player1.getSpriteCentre().x - (playerArrow.getTWidth() / 2), player1.getSpriteCentre().y - (playerArrow.getTHeight() + 100)));
-	arrowP1->setTexture(playerArrow.getTexture());
-	arrowP1->setTextureDimensions(playerArrow.getTWidth(), playerArrow.getTHeight());
-	player1.attachArrowSprite(arrowP1);
+	player1.attachArrowSprite();
 
 	/*
 	//players 2
@@ -125,7 +118,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 		//player 1
 		player1.update();
 		player1.render();
-		arrowP1->render();
 
 		//player 2 renderers
 		//spriteP2.update();

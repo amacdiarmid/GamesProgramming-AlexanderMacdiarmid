@@ -12,7 +12,7 @@ cSprite.h
 
 class cSprite
 {
-private:
+protected:
 	static cSprite* pInstance;
 	// position, rotation, scalling
 	glm::vec2 spritePos2D;
@@ -38,7 +38,7 @@ public:
 	cSprite();			// Default constructor
 	//cSprite(glm::vec3 sPosition, LPDIRECT3DDEVICE9 pd3dDevice, LPCSTR theFilename); // Constructor
 	~cSprite();			// Destructor
-	void render();
+	virtual void render();
 	void setSpriteTexCoordData();
 	glm::vec2 getSpritePos();  // Return the sprites current position
 	void setSpritePos(glm::vec2 sPosition); // set the position of the sprite
@@ -49,7 +49,7 @@ public:
 	glm::vec2 getSpriteTranslation();  // return the amount of movement on the x & y axis
 	void setSpriteCentre(); // Set the sprites centre point
 	glm::vec2 getSpriteCentre();  // return the sprites centre point
-	void setSpriteRotaion(float rotation); //rotate the sprite 
+	virtual void setSpriteRotaion(float rotation); //rotate the sprite 
 
 };
 #endif

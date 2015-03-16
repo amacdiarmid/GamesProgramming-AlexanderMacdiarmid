@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include "cSprite.h"
+#include "arrow.h"
 #include "cInputMgr.h"
 #include "rock.h"
 using namespace std;
@@ -19,7 +20,7 @@ private:
 	glm::vec2 playerSpeed;
 	float playerRotation;
 	cInputMgr* m_InputMgr;
-	cSprite* arrowSprite;
+	arrow arrowSprite;
 
 public:
 	//constructor
@@ -38,10 +39,11 @@ public:
 
 	//update
 	void update();			//the player Update
+	void render();
 
 	//attach
 	void attachInputMgr(cInputMgr* inputMgr);
-	void attachArrowSprite(cSprite* sprite);
+	void attachArrowSprite();
 
 	//action methods
 	void angleUp();			//change the current angle up/down

@@ -26,7 +26,6 @@ cSprite* cSprite::getInstance()
 
 cSprite::cSprite() 			// Default constructor
 {
-
 	cSprite::spritePos2D.x = 0.0f;
 	cSprite::spritePos2D.y = 0.0f;
 	cSprite::setSpriteTexCoordData();
