@@ -68,7 +68,7 @@ void player::attachArrowSprite()
 	cTexture playerArrow;
 	playerArrow.createTexture("arrow texture.png");
 	arrow arrowP1;
-	arrowP1.setSpritePos(glm::vec2(getSpriteCentre().x, getSpriteCentre().y + 100.0f));
+	arrowP1.setSpritePos(glm::vec2(getSpritePos().x, getSpritePos().y));
 	arrowP1.setTexture(playerArrow.getTexture());
 	arrowP1.setTextureDimensions(playerArrow.getTWidth(), playerArrow.getTHeight());
 	arrowP1.setSpriteCentre();
@@ -116,7 +116,7 @@ void player::render()
 {
 	glPushMatrix();
 
-	glTranslatef(spriteTranslation.x, spriteTranslation.y, 0.0f);
+	glTranslatef(spritePos2D.x, spritePos2D.y, 0.0f);
 	glRotatef(spriteRotation, 0.0f, 0.0f, 1.0f);
 	glScalef(spriteScaling.x, spriteScaling.y, 1.0f);
 
@@ -126,13 +126,13 @@ void player::render()
 	glBegin(GL_QUADS);
 	glColor3f(255.0f, 255.0f, 255.0f);
 	glTexCoord2f(spriteTexCoordData[0].x, spriteTexCoordData[0].y);
-	glVertex2f(spritePos2D.x, spritePos2D.y);
+	glVertex2f(-(textureWidth / 2), -(textureHeight / 2));
 	glTexCoord2f(spriteTexCoordData[1].x, spriteTexCoordData[1].y);
-	glVertex2f(spritePos2D.x + textureWidth, spritePos2D.y);
+	glVertex2f((textureWidth / 2), -(textureHeight / 2));
 	glTexCoord2f(spriteTexCoordData[2].x, spriteTexCoordData[2].y);
-	glVertex2f(spritePos2D.x + textureWidth, spritePos2D.y + textureHeight);
+	glVertex2f((textureWidth / 2), (textureHeight / 2));
 	glTexCoord2f(spriteTexCoordData[3].x, spriteTexCoordData[3].y);
-	glVertex2f(spritePos2D.x, spritePos2D.y + textureHeight);
+	glVertex2f(-(textureWidth / 2), (textureHeight / 2));
 
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
@@ -145,21 +145,19 @@ void player::render()
 //action methods
 void player::angleUp()
 {
-	arrowSprite.setSpriteRotaion(1.0f, getSpriteCentre());
+	arrowSprite.setSpriteRotaion(-1.0f, getSpriteCentre());
 }
 void player::angleDown()
 {
-	arrowSprite.setSpriteRotaion(-1.0f, getSpriteCentre());
+	arrowSprite.setSpriteRotaion(1.0f, getSpriteCentre());
 }
 void player::powerUp()
 {
-	//create new rock object 
-	//call the calculate arc method on rock
+	arrowSprite.setSpriteLength(2.0f);
 }
 void player::powerDown()
 {
-	//if input is posotive then move player right
-	//else move player left
+	arrowSprite.setSpriteLength(-2.0f);
 }
 void player::moveLeft()
 {

@@ -83,7 +83,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	//create player 1
 	player player1 = player::player("alex");
 	player1.attachInputMgr(theInputMgr);
-	player1.setSpritePos(glm::vec2((windowWidth / 4) - (playerText.getTWidth() / 2), windowHeight - playerText.getTHeight()));
+	player1.setSpritePos(glm::vec2(windowWidth / 4, windowHeight - (playerText.getTHeight() / 2)));
 	player1.setTexture(playerText.getTexture());
 	player1.setTextureDimensions(playerText.getTWidth(), playerText.getTHeight());
 	player1.setSpriteCentre();

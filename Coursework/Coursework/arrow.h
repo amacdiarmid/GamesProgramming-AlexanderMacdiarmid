@@ -8,6 +8,7 @@ class arrow : public cSprite
 {
 protected:
 	glm::vec2 playerPos;
+	float arrowLength = 0;
 
 public:
 	arrow();
@@ -15,5 +16,6 @@ public:
 	~arrow();
 	void render();
 	void setSpriteRotaion(float rotation, glm::vec2 playerCen);
+	void setSpriteLength(float length);
 };
 #endif
