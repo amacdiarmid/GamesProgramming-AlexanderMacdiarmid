@@ -21,6 +21,7 @@ private:
 	float playerRotation;
 	cInputMgr* m_InputMgr;
 	arrow arrowSprite;
+	rock thrownRock;
 
 public:
 	//constructor

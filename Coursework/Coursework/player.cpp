@@ -13,8 +13,8 @@ player::player()
 	playerName = "default";			
 	throws = 0;					
 	health = 3;				
-	angle = 0;				
-	power = 0;
+	angle = 90;				
+	power = 10;
 	playerSpeed = glm::vec2(1.0f, 0.0f);
 	playerRotation = 1.0f;
 }
@@ -29,8 +29,8 @@ player::player(string name)
 	playerName = name;
 	throws = 0;
 	health = 3;
-	angle = 0;
-	power = 0;
+	angle = 90;
+	power = 10;
 	playerSpeed = glm::vec2(5.0f, 0.0f);
 	playerRotation = 1.0f;
 }
@@ -140,23 +140,28 @@ void player::render()
 	glPopMatrix();
 
 	arrowSprite.render();
+	thrownRock.render();
 }
 
 //action methods
 void player::angleUp()
 {
+	angle++;
 	arrowSprite.setSpriteRotaion(-1.0f, getSpriteCentre());
 }
 void player::angleDown()
 {
+	angle--;
 	arrowSprite.setSpriteRotaion(1.0f, getSpriteCentre());
 }
 void player::powerUp()
 {
+	power++;
 	arrowSprite.setSpriteLength(2.0f);
 }
 void player::powerDown()
 {
+	power--;
 	arrowSprite.setSpriteLength(-2.0f);
 }
 void player::moveLeft()
@@ -171,5 +176,13 @@ void player::moveRight()
 }
 void player::throwRock()
 {
-
+	throws++;
+	cTexture playerRock;
+	playerRock.createTexture("rock texture.png");
+	rock RockP1 = rock::rock(angle, power);
+	RockP1.setSpritePos(glm::vec2(getSpritePos().x, getSpritePos().y));
+	RockP1.setTexture(playerRock.getTexture());
+	RockP1.setTextureDimensions(playerRock.getTWidth(), playerRock.getTHeight());
+	RockP1.setSpriteCentre();
+	thrownRock = RockP1;
 }
