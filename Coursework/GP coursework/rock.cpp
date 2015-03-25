@@ -30,12 +30,15 @@ void rock::update(float deltaTime)
 void rock::calculateArc()
 {
 	//equations taken from a higher physics book and converted into C++ by Alexander MacDiarmid
-	finalSpeed.x = pow((power*sin(angle)), 2);
+	float v = 0;
+	float vu = power*sin(angle);
+	float a = 9.8;
+	float vs = (pow(v, 2) - pow(vu, 2)) / -2 * a;
+	float t = (v - vu) / -a;
+	float hu = power*cos(angle);
+	float hs = hu * (t * 2);
+	float sintest = sin(90);
 
-	maxHeight = (0 - finalSpeed.x) / (2 * 9.8f);
-	time = (0 - finalSpeed.x) / 9.8f;
-	range = finalSpeed.x * time;
-
-	displacement.x = (maxHeight - playerPos.x) / time;
-	displacement.y = ((range / 2) - playerPos.y) / time;
+	displacement.x = (hs - playerPos.x) / (t * 100);
+	displacement.y = (vs - playerPos.y) / (t * 100);
 }
