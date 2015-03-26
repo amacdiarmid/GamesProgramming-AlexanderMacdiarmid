@@ -83,24 +83,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	//create player 1
 	player player1 = player::player("alex");
 	player1.attachInputMgr(theInputMgr);
-	player1.setSpritePos(glm::vec2(windowWidth / 4, windowHeight - (playerText.getTHeight() / 2)));
+	player1.setSpritePos(glm::vec2(windowWidth * 0.25, windowHeight - (playerText.getTHeight() / 2)));
 	player1.setTexture(playerText.getTexture());
 	player1.setTextureDimensions(playerText.getTWidth(), playerText.getTHeight());
 	player1.setSpriteCentre();
 	player1.attachArrowSprite();
 
-	/*
-	//players 2
-	static player player2 = player::player("not alex");
-	cTexture textureP2;
-	textureP2.createTexture("man texture.png");
-	cSprite spriteP2;
-	spriteP2.setSpritePos(glm::vec2(((windowWidth / 4) * 3) - (textureP2.getTWidth() / 2), windowHeight - textureP2.getTHeight()));
-	spriteP2.setTexture(textureP2.getTexture());
-	spriteP2.setTextureDimensions(textureP2.getTWidth(), textureP2.getTHeight());
-	spriteP2.attachInputMgr(theInputMgr);
-	spriteP2.attatchPlayerObject(player2);
-	*/
+	player player2 = player::player("not alex");
+	player2.attachInputMgr(theInputMgr);
+	player2.setSpritePos(glm::vec2(windowWidth * 0.75, windowHeight - (playerText.getTHeight() / 2)));
+	player2.setTexture(playerText.getTexture());
+	player2.setTextureDimensions(playerText.getTWidth(), playerText.getTHeight());
+	player2.setSpriteCentre();
+	player2.attachArrowSprite();
 
     //This is the mainloop, we render frames until isRunning returns false
 	while (pgmWNDMgr->isWNDRunning())
@@ -119,9 +114,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 		player1.update(elapsedTime);
 		player1.render();
 
-		//player 2 renderers
-		//spriteP2.update();
-		//spriteP2.render();
+		player2.update(elapsedTime);
+		player2.render();
 
 
 		//game->render();

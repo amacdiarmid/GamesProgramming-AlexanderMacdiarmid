@@ -2,6 +2,8 @@
 #include <iostream>
 #include <cmath>
 
+#define PI 3.14159265
+
 //constructor
 rock::rock()
 {
@@ -23,22 +25,41 @@ rock::~rock()
 
 void rock::update(float deltaTime)
 {
-	setSpritePos(getSpritePos() + displacement);
+	setSpritePos(getSpritePos() + (displacement*deltaTime));
+	displacement.y += 100 * deltaTime;
+}
+
+void rock::render()
+{
+	glPushMatrix();
+
+	glTranslatef(spritePos2D.x, spritePos2D.y, 0.0f);
+	glRotatef(spriteRotation, 0.0f, 0.0f, 1.0f);
+	glScalef(spriteScaling.x, spriteScaling.y, 1.0f);
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, GLTextureID); // Binding of GLtexture name 
+
+	glBegin(GL_QUADS);
+	glColor3f(255.0f, 255.0f, 255.0f);
+	glTexCoord2f(spriteTexCoordData[0].x, spriteTexCoordData[0].y);
+	glVertex2f(-(textureWidth / 2), -(textureHeight / 2));
+	glTexCoord2f(spriteTexCoordData[1].x, spriteTexCoordData[1].y);
+	glVertex2f((textureWidth / 2), -(textureHeight / 2));
+	glTexCoord2f(spriteTexCoordData[2].x, spriteTexCoordData[2].y);
+	glVertex2f((textureWidth / 2), (textureHeight / 2));
+	glTexCoord2f(spriteTexCoordData[3].x, spriteTexCoordData[3].y);
+	glVertex2f(-(textureWidth / 2), (textureHeight / 2));
+
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+
+	glPopMatrix();
 }
 
 //method
 void rock::calculateArc()
 {
-	//equations taken from a higher physics book and converted into C++ by Alexander MacDiarmid
-	float v = 0;
-	float vu = power*sin(angle);
-	float a = 9.8;
-	float vs = (pow(v, 2) - pow(vu, 2)) / -2 * a;
-	float t = (v - vu) / -a;
-	float hu = power*cos(angle);
-	float hs = hu * (t * 2);
-	float sintest = sin(90);
-
-	displacement.x = (hs - playerPos.x) / (t * 100);
-	displacement.y = (vs - playerPos.y) / (t * 100);
+	displacement.y = -power;
+	displacement.x = angle * -10;
 }

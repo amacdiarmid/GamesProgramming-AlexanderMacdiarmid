@@ -26,7 +26,8 @@ public:
 	//destructor
 	~rock();
 
-	void update(float deltaTime);
+	void update(float deltaTime)override;
+	void render()override;
 
 };
 #endif

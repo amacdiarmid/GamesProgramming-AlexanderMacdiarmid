@@ -29,8 +29,8 @@ player::player(string name)
 	playerName = name;
 	throws = 0;
 	health = 3;
-	angle = 90;
-	power = 5;
+	angle = 0;
+	power = 250;
 	playerSpeed = glm::vec2(5.0f, 0.0f);
 	playerRotation = 1.0f;
 }
@@ -148,7 +148,7 @@ void player::render()
 //action methods
 void player::angleUp()
 {
-	if (angle < 180)
+	if (angle < 90)
 	{
 		angle++;
 		arrowSprite.setSpriteRotaion(-1.0f, getSpriteCentre());
@@ -156,7 +156,7 @@ void player::angleUp()
 }
 void player::angleDown()
 {
-	if (angle > 0)
+	if (angle > -90)
 	{
 		angle--;
 		arrowSprite.setSpriteRotaion(1.0f, getSpriteCentre());
@@ -194,7 +194,7 @@ void player::throwRock()
 	cTexture playerRock;
 	playerRock.createTexture("Images\\rock texture.png");
 	rock RockP1 = rock::rock(angle, power, spritePos2D);
-	RockP1.setSpritePos(glm::vec2(getSpritePos().x, getSpritePos().y));
+	RockP1.setSpritePos(glm::vec2(getSpritePos().x, getSpritePos().y - (textureHeight/2)));
 	RockP1.setTexture(playerRock.getTexture());
 	RockP1.setTextureDimensions(playerRock.getTWidth(), playerRock.getTHeight());
 	RockP1.setSpriteCentre();
