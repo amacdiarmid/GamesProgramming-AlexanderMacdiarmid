@@ -57,6 +57,9 @@
     <ClCompile Include="rock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="wall.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cBkGround.h">
@@ -104,6 +107,12 @@
     <ClInclude Include="rock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wall.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="alut.lib" />
@@ -136,5 +145,10 @@
     <Image Include="Images\wall texture medium.png">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GP coursework.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

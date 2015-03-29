@@ -77,6 +77,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="rock.cpp" />
+    <ClCompile Include="wall.cpp" />
     <ClCompile Include="windowOGL.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -92,7 +93,9 @@
     <ClInclude Include="cWNDManager.h" />
     <ClInclude Include="GameConstants.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="rock.h" />
+    <ClInclude Include="wall.h" />
     <ClInclude Include="wglext.h" />
     <ClInclude Include="windowOGL.h" />
   </ItemGroup>
@@ -113,6 +116,9 @@
     <Image Include="Images\wall texture easy.png" />
     <Image Include="Images\wall texture hard.png" />
     <Image Include="Images\wall texture medium.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GP coursework.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

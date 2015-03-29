@@ -15,6 +15,7 @@ rock::rock(float Tangle, float Tpower, glm::vec2 TPlayerPos)
 	power = Tpower;
 	playerPos = TPlayerPos;
 	calculateArc();
+	setBoundingRect(&boundingRect);
 }
 
 //destructor
@@ -26,7 +27,11 @@ rock::~rock()
 void rock::update(float deltaTime)
 {
 	setSpritePos(getSpritePos() + (displacement*deltaTime));
+	setSpriteRotation(spriteRotation);
 	displacement.y += 100 * deltaTime;
+	spriteRotation += 5;
+
+	setBoundingRect(&boundingRect);
 }
 
 void rock::render()

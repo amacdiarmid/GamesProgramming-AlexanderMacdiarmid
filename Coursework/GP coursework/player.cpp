@@ -18,6 +18,7 @@ player::player()
 	playerSpeed = glm::vec2(1.0f, 0.0f);
 	playerRotation = 1.0f;
 	rockThrown = false;
+	setBoundingRect(&boundingRect);
 }
 player::player(string name)
 {
@@ -35,6 +36,7 @@ player::player(string name)
 	playerSpeed = glm::vec2(5.0f, 0.0f);
 	playerRotation = 1.0f;
 	rockThrown = false;
+	setBoundingRect(&boundingRect);
 }
 
 //destructor
@@ -146,10 +148,11 @@ void player::update(float deltaTime)
 		}
 	}
 
+	setBoundingRect(&boundingRect);
+
 	if (rockThrown == true)
 	{
 		thrownRock.update(deltaTime);
-
 	}	
 }
 

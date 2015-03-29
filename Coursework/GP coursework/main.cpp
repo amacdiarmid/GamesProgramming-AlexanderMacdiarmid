@@ -12,6 +12,7 @@
 #include "cSprite.h"
 #include "cBkGround.h"
 #include "player.h"
+#include "wall.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int cmdShow)
 {
@@ -72,7 +73,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	//wall
 	cTexture textureWall;
 	textureWall.createTexture("Images\\wall texture easy.png");
-	cSprite spriteWall;
+	wall spriteWall;
 	spriteWall.setSpritePos(glm::vec2((windowWidth / 2) - (textureWall.getTWidth() / 2), windowHeight - textureWall.getTHeight()));
 	spriteWall.setTexture(textureWall.getTexture());
 	spriteWall.setTextureDimensions(textureWall.getTWidth(), textureWall.getTHeight());
@@ -116,6 +117,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		spriteBkgd.render();
+
+		spriteWall.update(elapsedTime);
 		spriteWall.render();
 		
 		//player 1
@@ -142,22 +145,48 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 				player2.setActive(true);
 			}
 			//see if rock has collided with wall
-			else if (player1.getRock().collidedWith(player1.getRock().getBoundingRect(), player2.getBoundingRect()))
+			else if (player1.getRock().collidedWith(player1.getRock().getBoundingRect(), spriteWall.getBoundingRect()))
 			{
 				//destroy rock 
 				player1.getRock().setActive(false);
 				player1.setThrownRock(false);
 				player2.setActive(true);
 			}
+			//see if the rock has gone off screen
 			else if (player1.getRock().getSpritePos().y >= windowHeight+100 || player1.getRock().getSpritePos().x <= -100 || player1.getRock().getSpritePos().x >= windowWidth+100)
 			{
 				player1.getRock().setActive(false);
 				player1.setThrownRock(false);
 				player2.setActive(true);
 			}
-			else if (player1.getRock().getSpritePos().x >= windowWidth/2)
+		}
+		else if (player2.getRockThrown() == true)
+		{
+			//lock the player position
+			player2.setActive(false);
+			//see if the rock has collided with the other player 
+			if (player2.getRock().collidedWith(player2.getRock().getBoundingRect(), player1.getBoundingRect()))
+			{
+				//send player been hit message
+				player1.messagePlayerHit(player2.getName());
+				player2.getRock().setActive(false);
+				player2.setThrownRock(false);
+				player1.setActive(true);
+			}
+			//see if rock has collided with wall
+			else if (player2.getRock().collidedWith(player2.getRock().getBoundingRect(), spriteWall.getBoundingRect()))
+			{
+				//destroy rock 
+				player2.getRock().setActive(false);
+				player2.setThrownRock(false);
+				player1.setActive(true);
+			}
+			//see if the rock has gone off screen
+			else if (player2.getRock().getSpritePos().y >= windowHeight + 100 || player2.getRock().getSpritePos().x <= -100 || player2.getRock().getSpritePos().x >= windowWidth + 100)
 			{
 				player1.getRock().setActive(false);
+				player2.setThrownRock(false);
+				player1.setActive(true);
 			}
 		}
 
