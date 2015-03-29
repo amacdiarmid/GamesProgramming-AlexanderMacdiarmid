@@ -30,6 +30,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	// This is the input manager
 	static cInputMgr* theInputMgr = cInputMgr::getInstance();
 
+	
+
     //The example OpenGL code
     windowOGL theOGLWnd;	
 
@@ -74,6 +76,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	spriteWall.setSpritePos(glm::vec2((windowWidth / 2) - (textureWall.getTWidth() / 2), windowHeight - textureWall.getTHeight()));
 	spriteWall.setTexture(textureWall.getTexture());
 	spriteWall.setTextureDimensions(textureWall.getTWidth(), textureWall.getTHeight());
+	spriteWall.setMdlRadius();
 
 	//create textures	
 	//player
@@ -88,6 +91,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	player1.setTextureDimensions(playerText.getTWidth(), playerText.getTHeight());
 	player1.setSpriteCentre();
 	player1.attachArrowSprite();
+	player1.setActive(true);
+	player1.setMdlRadius();
+	
 
 	player player2 = player::player("not alex");
 	player2.attachInputMgr(theInputMgr);
@@ -96,8 +102,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	player2.setTextureDimensions(playerText.getTWidth(), playerText.getTHeight());
 	player2.setSpriteCentre();
 	player2.attachArrowSprite();
-
-    //This is the mainloop, we render frames until isRunning returns false
+	player2.setActive(false);
+	player2.setMdlRadius();
+	
+	//This is the mainloop, we render frames until isRunning returns false
 	while (pgmWNDMgr->isWNDRunning())
     {
 		pgmWNDMgr->processWNDEvents(); //Process any window events
@@ -114,11 +122,44 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 		player1.update(elapsedTime);
 		player1.render();
 
+		//player 2
 		player2.update(elapsedTime);
 		player2.render();
 
-
-		//game->render();
+		//do game stuff here
+		//check the player 1 rock
+		if (player1.getRockThrown() == true)
+		{
+			//lock the player position
+			player1.setActive(false);
+			//see if the rock has collided with the other player 
+			if (player1.getRock().collidedWith(player1.getRock().getBoundingRect(), player2.getBoundingRect()))
+			{
+				//send player been hit message
+				player2.messagePlayerHit(player1.getName());
+				player1.getRock().setActive(false);
+				player1.setThrownRock(false);
+				player2.setActive(true);
+			}
+			//see if rock has collided with wall
+			else if (player1.getRock().collidedWith(player1.getRock().getBoundingRect(), player2.getBoundingRect()))
+			{
+				//destroy rock 
+				player1.getRock().setActive(false);
+				player1.setThrownRock(false);
+				player2.setActive(true);
+			}
+			else if (player1.getRock().getSpritePos().y >= windowHeight+100 || player1.getRock().getSpritePos().x <= -100 || player1.getRock().getSpritePos().x >= windowWidth+100)
+			{
+				player1.getRock().setActive(false);
+				player1.setThrownRock(false);
+				player2.setActive(true);
+			}
+			else if (player1.getRock().getSpritePos().x >= windowWidth/2)
+			{
+				player1.getRock().setActive(false);
+			}
+		}
 
 		pgmWNDMgr->swapBuffers();
 		theInputMgr->clearBuffers(theInputMgr->KEYS_DOWN_BUFFER | theInputMgr->KEYS_PRESSED_BUFFER);

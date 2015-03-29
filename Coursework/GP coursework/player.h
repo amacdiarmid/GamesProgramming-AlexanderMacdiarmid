@@ -22,6 +22,8 @@ private:
 	cInputMgr* m_InputMgr;
 	arrow arrowSprite;
 	rock thrownRock;
+	bool active;
+	bool rockThrown;
 
 public:
 	//constructor
@@ -33,6 +35,11 @@ public:
 
 	//accessor methods 
 	string getName();			//get the player name
+	void setActive(bool);
+	bool getActive();
+	bool getRockThrown();
+	void setThrownRock(bool);
+	rock getRock();
 
 	//message methods
 	void messagePlayerWin(string);	//display message on player win
@@ -53,6 +60,6 @@ public:
 	void powerDown();
 	void moveLeft();		//move the player left/right
 	void moveRight();			
-	void throwRock();		//throw rock
+	void throwRock();		//throw rocks
 };
 #endif

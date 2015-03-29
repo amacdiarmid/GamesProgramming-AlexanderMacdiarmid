@@ -17,6 +17,7 @@ player::player()
 	power = 0;
 	playerSpeed = glm::vec2(1.0f, 0.0f);
 	playerRotation = 1.0f;
+	rockThrown = false;
 }
 player::player(string name)
 {
@@ -33,6 +34,7 @@ player::player(string name)
 	power = 250;
 	playerSpeed = glm::vec2(5.0f, 0.0f);
 	playerRotation = 1.0f;
+	rockThrown = false;
 }
 
 //destructor
@@ -47,14 +49,44 @@ string player::getName()
 	return playerName;
 }
 
+void player::setActive(bool value)
+{
+	active = value;
+}
+
+bool player::getActive()
+{
+	return active;
+}
+bool player::getRockThrown()
+{
+	return rockThrown;
+}
+void player::setThrownRock(bool value)
+{
+	rockThrown = value;
+}
+rock player::getRock()
+{
+	return thrownRock;
+}
+
 //message methods
 void player::messagePlayerWin(string name)
 {
-	cout << playerName << " killed " << name << endl;
+	cout << name << " killed " << playerName << endl;
 }
 void player::messagePlayerHit(string name)
 {
-	cout << playerName << " hit " << name << endl;
+	health--;
+	if (health <= 0)
+	{
+		messagePlayerWin(name);
+	}
+	else
+	{
+		cout << name << " hit " << playerName << endl;
+	}
 }
 
 //attach
@@ -78,40 +110,47 @@ void player::attachArrowSprite()
 //update
 void player::update(float deltaTime)
 {
-	//move left and right 
-	if (m_InputMgr->isKeyDown('D'))
+	if (active == true)
 	{
-		moveRight();
-	}
-	if (m_InputMgr->isKeyDown('A'))
-	{
-		moveLeft();
-	}
-	//adjust angle
-	if (m_InputMgr->isKeyDown('W'))
-	{
-		angleUp();
-	}
-	if (m_InputMgr->isKeyDown('S'))
-	{
-		angleDown();
-	}
-	//adjust power
-	if (m_InputMgr->isKeyDown('Q'))
-	{
-		powerUp();
-	}
-	if (m_InputMgr->isKeyDown('E'))
-	{
-		powerDown();
-	}
-	//throw rock
-	if (m_InputMgr->isKeyDown(VK_SPACE))
-	{
-		throwRock();
+		//move left and right 
+		if (m_InputMgr->isKeyDown('D'))
+		{
+			moveRight();
+		}
+		if (m_InputMgr->isKeyDown('A'))
+		{
+			moveLeft();
+		}
+		//adjust angle
+		if (m_InputMgr->isKeyDown('W'))
+		{
+			angleUp();
+		}
+		if (m_InputMgr->isKeyDown('S'))
+		{
+			angleDown();
+		}
+		//adjust power
+		if (m_InputMgr->isKeyDown('Q'))
+		{
+			powerUp();
+		}
+		if (m_InputMgr->isKeyDown('E'))
+		{
+			powerDown();
+		}
+		//throw rock
+		if (m_InputMgr->isKeyDown(VK_SPACE))
+		{
+			throwRock();
+		}
 	}
 
-	thrownRock.update(deltaTime);
+	if (rockThrown == true)
+	{
+		thrownRock.update(deltaTime);
+
+	}	
 }
 
 void player::render()
@@ -142,7 +181,10 @@ void player::render()
 	glPopMatrix();
 
 	arrowSprite.render();
-	thrownRock.render();
+	if (rockThrown == true)
+	{
+		thrownRock.render();
+	}
 }
 
 //action methods
@@ -191,6 +233,7 @@ void player::moveRight()
 void player::throwRock()
 {
 	throws++;
+	rockThrown = true;
 	cTexture playerRock;
 	playerRock.createTexture("Images\\rock texture.png");
 	rock RockP1 = rock::rock(angle, power, spritePos2D);
@@ -198,5 +241,7 @@ void player::throwRock()
 	RockP1.setTexture(playerRock.getTexture());
 	RockP1.setTextureDimensions(playerRock.getTWidth(), playerRock.getTHeight());
 	RockP1.setSpriteCentre();
+	RockP1.setMdlRadius();
 	thrownRock = RockP1;
+	active = false;
 }
