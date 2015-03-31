@@ -29,5 +29,8 @@ public:
 	void update(float deltaTime)override;
 	void render()override;
 
+	//methods
+	bool pixelCheck(cSprite rock, cSprite object);
+
 };
 #endif

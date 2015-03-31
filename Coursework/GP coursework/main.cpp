@@ -138,6 +138,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 			//see if the rock has collided with the other player 
 			if (player1.getRock().collidedWith(player1.getRock().getBoundingRect(), player2.getBoundingRect()))
 			{
+				//pixel collision
 				//send player been hit message
 				player2.messagePlayerHit(player1.getName());
 				player1.getRock().setActive(false);

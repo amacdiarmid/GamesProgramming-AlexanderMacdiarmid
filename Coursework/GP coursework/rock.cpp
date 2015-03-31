@@ -68,3 +68,11 @@ void rock::calculateArc()
 	displacement.y = -power;
 	displacement.x = angle * -10;
 }
+
+bool rock::pixelCheck(cSprite rock, cSprite object)
+{
+	for (int i = 0; i < rock; i++)
+	{
+
+	}
+}

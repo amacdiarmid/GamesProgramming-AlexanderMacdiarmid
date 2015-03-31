@@ -117,9 +117,6 @@
     <Image Include="Images\wall texture hard.png" />
     <Image Include="Images\wall texture medium.png" />
   </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="GP coursework.rc" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
