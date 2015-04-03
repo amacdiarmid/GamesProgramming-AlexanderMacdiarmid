@@ -17,7 +17,8 @@ private:
 	GLsizei textureWidth;
 	GLsizei textureHeight;
 	ILuint ilTextureID;
-	ILubyte *txData;
+	char *txData;
+	int pitch;
 
 public:
 	cTexture();
@@ -27,5 +28,6 @@ public:
 	GLuint getTexture();						// return the texture.
 	GLsizei getTWidth();						// Return width of texture;
 	GLsizei getTHeight();						// Return height of texture;
+	bool checkPixel(int x, int y);
 };
 #endif

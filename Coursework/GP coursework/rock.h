@@ -21,16 +21,15 @@ private:
 public:
 	//constructor
 	rock();					//default constructor
-	rock(float, float, glm::vec2);		//constructor with the values for the arc
+	void throwIt(float Tangle, float Tpower, glm::vec2 TPlayerPos);		//constructor with the values for the arc
 
 	//destructor
 	~rock();
 
 	void update(float deltaTime)override;
-	void render()override;
 
 	//methods
-	bool pixelCheck(cSprite rock, cSprite object);
+	bool pixelCheck(cSprite *rock, cSprite *object);
 
 };
 #endif

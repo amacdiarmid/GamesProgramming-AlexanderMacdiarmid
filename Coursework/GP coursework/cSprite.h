@@ -26,6 +26,10 @@ protected:
 	float m_Radius;
 	bool mActive;
 
+	glm::vec3 WorldMatrix;
+	glm::vec3 InverseWorldMatrix;
+	glm::mat4x4 matrix;
+
 	//texturing
 	glm::vec2 spriteVertexData[4];
 	glm::vec2 spriteTexCoordData[4];
@@ -36,6 +40,7 @@ protected:
 	GLuint GLTextureID;
 	cInputMgr* m_InputMgr;
 	cSoundMgr* m_SoundMgr;
+	cTexture* texture;
 
 	float lengthSQRD(glm::vec2 theLength);
 
@@ -47,7 +52,8 @@ public:
 	glm::vec2 getSpritePos();  // Return the sprites current position
 	void setSpritePos(glm::vec2 sPosition); // set the position of the sprite
 	GLuint getTexture();  // Return the sprites current image
-	void setTexture(GLuint GLtexID);  // set the image of the sprite
+	cTexture* getTextPoint();
+	void setTexture(GLuint GLtexID, cTexture* tempTexture);  // set the image of the sprite
 	void setTextureDimensions(int texWidth, int textHeight);
 	void setSpriteTranslation(glm::vec2 translation); // Set the amount of movement on the x & y axis
 	glm::vec2 getSpriteTranslation();  // return the amount of movement on the x & y axis
@@ -62,10 +68,14 @@ public:
 	void attachInputMgr(cInputMgr* inputMgr);  // Attach the Input Manager
 	void attachSoundMgr(cSoundMgr* soundMgr);  // Attach the Sound Manager
 	virtual void update(float deltaTime);
-	void setBoundingRect(RECT* pRect);		// Determine the bounding rectangle for the sprite
+	void updateBoundingRect();		// Determine the bounding rectangle for the sprite
 	RECT getBoundingRect();		// Determine the bounding rectangle for the sprite
 	bool collidedWith(RECT thisSprite, RECT otherSpritePos);	// Check for collisions
 	bool SphereSphereCollision(glm::vec2 spritePosition, float spiteRadius);
 	virtual void renderCollisionBox();				// Use this function to show the collision box
+	glm::vec2 getTextureSize();
+	glm::mat4x4 getWorldMatrix();
+	glm::vec2 getInverseMatrix();
+
 };
 #endif

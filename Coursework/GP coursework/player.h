@@ -39,7 +39,7 @@ public:
 	bool getActive();
 	bool getRockThrown();
 	void setThrownRock(bool);
-	rock getRock();
+	rock* getRock();
 
 	//message methods
 	void messagePlayerWin(string);	//display message on player win

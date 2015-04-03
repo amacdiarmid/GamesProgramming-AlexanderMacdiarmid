@@ -18,7 +18,7 @@ player::player()
 	playerSpeed = glm::vec2(1.0f, 0.0f);
 	playerRotation = 1.0f;
 	rockThrown = false;
-	setBoundingRect(&boundingRect);
+	updateBoundingRect();
 }
 player::player(string name)
 {
@@ -36,7 +36,7 @@ player::player(string name)
 	playerSpeed = glm::vec2(5.0f, 0.0f);
 	playerRotation = 1.0f;
 	rockThrown = false;
-	setBoundingRect(&boundingRect);
+	updateBoundingRect();
 }
 
 //destructor
@@ -68,9 +68,9 @@ void player::setThrownRock(bool value)
 {
 	rockThrown = value;
 }
-rock player::getRock()
+rock* player::getRock()
 {
-	return thrownRock;
+	return &thrownRock;
 }
 
 //message methods
@@ -99,14 +99,12 @@ void player::attachInputMgr(cInputMgr* inputMgr)
 void player::attachArrowSprite()
 {
 	//arrow
-	cTexture playerArrow;
-	playerArrow.createTexture("Images\\arrow texture.png");
-	arrow arrowP1;
-	arrowP1.setSpritePos(glm::vec2(getSpritePos().x, getSpritePos().y));
-	arrowP1.setTexture(playerArrow.getTexture());
-	arrowP1.setTextureDimensions(playerArrow.getTWidth(), playerArrow.getTHeight());
-	arrowP1.setSpriteCentre();
-	arrowSprite = arrowP1;
+	cTexture *playerArrow = new cTexture();
+	playerArrow->createTexture("Images\\arrow texture.png");
+	arrowSprite.setSpritePos(glm::vec2(getSpritePos().x, getSpritePos().y));
+	arrowSprite.setTexture(playerArrow->getTexture(), playerArrow);
+	arrowSprite.setTextureDimensions(playerArrow->getTWidth(), playerArrow->getTHeight());
+	arrowSprite.setSpriteCentre();
 }
 
 //update
@@ -148,7 +146,7 @@ void player::update(float deltaTime)
 		}
 	}
 
-	setBoundingRect(&boundingRect);
+	updateBoundingRect();
 
 	if (rockThrown == true)
 	{
@@ -237,14 +235,13 @@ void player::throwRock()
 {
 	throws++;
 	rockThrown = true;
-	cTexture playerRock;
-	playerRock.createTexture("Images\\rock texture.png");
-	rock RockP1 = rock::rock(angle, power, spritePos2D);
-	RockP1.setSpritePos(glm::vec2(getSpritePos().x, getSpritePos().y - (textureHeight/2)));
-	RockP1.setTexture(playerRock.getTexture());
-	RockP1.setTextureDimensions(playerRock.getTWidth(), playerRock.getTHeight());
-	RockP1.setSpriteCentre();
-	RockP1.setMdlRadius();
-	thrownRock = RockP1;
+	cTexture *playerRock = new cTexture();
+	playerRock->createTexture("Images\\rock texture.png");
+	thrownRock.setSpritePos(glm::vec2(getSpritePos().x, getSpritePos().y - (textureHeight / 2)));
+	thrownRock.setTexture(playerRock->getTexture(), playerRock);
+	thrownRock.setTextureDimensions(playerRock->getTWidth(), playerRock->getTHeight());
+	thrownRock.setSpriteCentre();
+	thrownRock.setMdlRadius();
+	thrownRock.throwIt(angle, power, spritePos2D);
 	active = false;
 }

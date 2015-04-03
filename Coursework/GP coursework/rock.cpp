@@ -7,15 +7,28 @@
 //constructor
 rock::rock()
 {
-	cout << "error the rock constructor shoud not be called" << endl;
+	
 }
-rock::rock(float Tangle, float Tpower, glm::vec2 TPlayerPos)
+void rock::throwIt(float Tangle, float Tpower, glm::vec2 TPlayerPos)
 {
 	angle = Tangle;
 	power = Tpower;
 	playerPos = TPlayerPos;
 	calculateArc();
-	setBoundingRect(&boundingRect);
+	updateBoundingRect();
+
+	/*cout << endl;
+	int width = getTextureSize().x;
+	int height = getTextureSize().y;
+	cout << width << " " << height << endl;
+	for (int y = 0; y < height; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			cout << getTextPoint()->checkPixel(x, y) ? 1 : 0;
+		}
+		cout << endl;
+	}*/
 }
 
 //destructor
@@ -29,37 +42,9 @@ void rock::update(float deltaTime)
 	setSpritePos(getSpritePos() + (displacement*deltaTime));
 	setSpriteRotation(spriteRotation);
 	displacement.y += 100 * deltaTime;
-	spriteRotation += 5;
+	spriteRotation += 0.0f;
 
-	setBoundingRect(&boundingRect);
-}
-
-void rock::render()
-{
-	glPushMatrix();
-
-	glTranslatef(spritePos2D.x, spritePos2D.y, 0.0f);
-	glRotatef(spriteRotation, 0.0f, 0.0f, 1.0f);
-	glScalef(spriteScaling.x, spriteScaling.y, 1.0f);
-
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, GLTextureID); // Binding of GLtexture name 
-
-	glBegin(GL_QUADS);
-	glColor3f(255.0f, 255.0f, 255.0f);
-	glTexCoord2f(spriteTexCoordData[0].x, spriteTexCoordData[0].y);
-	glVertex2f(-(textureWidth / 2), -(textureHeight / 2));
-	glTexCoord2f(spriteTexCoordData[1].x, spriteTexCoordData[1].y);
-	glVertex2f((textureWidth / 2), -(textureHeight / 2));
-	glTexCoord2f(spriteTexCoordData[2].x, spriteTexCoordData[2].y);
-	glVertex2f((textureWidth / 2), (textureHeight / 2));
-	glTexCoord2f(spriteTexCoordData[3].x, spriteTexCoordData[3].y);
-	glVertex2f(-(textureWidth / 2), (textureHeight / 2));
-
-	glEnd();
-	glDisable(GL_TEXTURE_2D);
-
-	glPopMatrix();
+	updateBoundingRect();
 }
 
 //method
@@ -69,10 +54,31 @@ void rock::calculateArc()
 	displacement.x = angle * -10;
 }
 
-bool rock::pixelCheck(cSprite rock, cSprite object)
+bool rock::pixelCheck(cSprite *rock, cSprite *object)
 {
-	for (int i = 0; i < rock; i++)
-	{
+	glm::mat4x4 rMat = rock->getWorldMatrix();
+	glm::mat4x4 oMat = object->getWorldMatrix();
 
+	glm::ivec2 rSizeHalf(rock->getTextureSize().x / 2, rock->getTextureSize().y / 2);
+	glm::ivec2 oSizeHalf(object->getTextureSize().x / 2, object->getTextureSize().y / 2);
+	for (int x = 0; x < rock->getTextureSize().x; x++)
+	{
+		for (int y = 0; y < rock->getTextureSize().y; y++)
+		{
+			bool solidA = rock->getTextPoint()->checkPixel(x, y);
+			if (solidA)
+			{
+				glm::vec4 pos = rMat * glm::vec4(x, y, 0, 1) - glm::vec4(rSizeHalf.x, rSizeHalf.y, 0, 0);
+				glm::vec4 positionB = glm::inverse(oMat) * pos + glm::vec4(oSizeHalf.x, oSizeHalf.y, 0, 0);
+
+				if (positionB.x < 0 || positionB.y < 0 || positionB.x >= object->getTextureSize().x || positionB.y >= object->getTextureSize().y) continue;
+
+				bool solidB = object->getTextPoint()->checkPixel(positionB.x, positionB.y);
+
+				if (solidA && solidB) 
+					return true;
+			}
+		}
 	}
+	return false;
 }

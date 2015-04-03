@@ -22,7 +22,6 @@ cSprite::cSprite() 			// Default constructor
 	cSprite::spriteScaling = glm::vec2(1.0f, 1.0f);
 	cSprite::spriteRotation = 0.0f;
 	cSprite::spriteCentre = glm::vec2(0.0f, 0.0f);
-	cSprite::setBoundingRect(&boundingRect);
 }
 
 /*
@@ -32,6 +31,9 @@ cSprite::cSprite() 			// Default constructor
 */
 cSprite::~cSprite()			// Destructor
 {
+	if (texture)
+		delete texture;
+	texture = NULL;
 }
 /*
 =================
@@ -66,15 +68,21 @@ GLuint cSprite::getTexture()  // Return the sprites current image
 	return GLTextureID;
 }
 
+cTexture* cSprite::getTextPoint()
+{
+	return texture;
+}
+
 /*
 =================
 - set the image of the sprite.
 =================
 */
 
-void cSprite::setTexture(GLuint GLtexID)  // set the image of the sprite
+void cSprite::setTexture(GLuint GLtexID, cTexture* tempTexture)  // set the image of the sprite
 {
 	GLTextureID = GLtexID;
+	texture = tempTexture;
 }
 
 /*
@@ -166,8 +174,9 @@ void cSprite::render()
 	glPushMatrix();
 
 	glTranslatef(spritePos2D.x, spritePos2D.y, 0.0f);
-	glRotatef(spriteRotation, 0.0f, 0.0f,1.0f);
+	glRotatef(spriteRotation, 0.0f, 0.0f, 1.0f);
 	glScalef(spriteScaling.x, spriteScaling.y, 1.0f);
+	//glGetFloatv(GL_PROJECTION, (float*)&matrix);
 
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, GLTextureID); // Binding of GLtexture name 
@@ -175,14 +184,13 @@ void cSprite::render()
 	glBegin(GL_QUADS);
 		glColor3f(255.0f, 255.0f, 255.0f);
 		glTexCoord2f(spriteTexCoordData[0].x, spriteTexCoordData[0].y);
-		glVertex2f(0, 0);
+		glVertex2f(-(textureWidth / 2), -(textureHeight / 2));
 		glTexCoord2f(spriteTexCoordData[1].x, spriteTexCoordData[1].y);
-		glVertex2f( textureWidth, 0);
+		glVertex2f((textureWidth / 2), -(textureHeight / 2));
 		glTexCoord2f(spriteTexCoordData[2].x, spriteTexCoordData[2].y);
-		glVertex2f(textureWidth, textureHeight);
+		glVertex2f((textureWidth / 2), (textureHeight / 2));
 		glTexCoord2f(spriteTexCoordData[3].x, spriteTexCoordData[3].y);
-		glVertex2f(0, textureHeight);
-
+		glVertex2f(-(textureWidth / 2), (textureHeight / 2));
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 
@@ -239,16 +247,16 @@ void cSprite::update(float deltaTime)
 =================
 */
 
-void cSprite::setBoundingRect(RECT* pRect)
+void cSprite::updateBoundingRect()
 {
 	glm::vec2 sPos = getSpritePos();
 	RECT theBoundingRect;
-	theBoundingRect.left = sPos.x;
-	theBoundingRect.top = sPos.y;
-	theBoundingRect.right = textureWidth + sPos.x;
-	theBoundingRect.bottom = textureHeight + sPos.y;
+	theBoundingRect.left = sPos.x - textureWidth / 2;
+	theBoundingRect.top = sPos.y - textureHeight / 2;
+	theBoundingRect.right = textureWidth / 2 + sPos.x;
+	theBoundingRect.bottom = textureHeight / 2 + sPos.y;
 
-	SetRect(pRect, (int)theBoundingRect.left, (int)theBoundingRect.top, (int)theBoundingRect.right, (int)theBoundingRect.bottom);
+	SetRect(&boundingRect, (int)theBoundingRect.left, (int)theBoundingRect.top, (int)theBoundingRect.right, (int)theBoundingRect.bottom);
 }
 /*
 =================
@@ -302,10 +310,6 @@ Use this method to show the collision box.
 void cSprite::renderCollisionBox()
 {
 	glPushMatrix();
-
-	glTranslatef(boundingRect.left, boundingRect.top, 0.0f);
-	glRotatef(spriteRotation, 0.0f, 0.0f, 1.0f);
-	glScalef(spriteScaling.x, spriteScaling.y, 1.0f);
 	
 	glColor3f(255.0f, 0.0f, 0.0f);
 	//glBegin(GL_LINE_LOOP);
@@ -314,13 +318,25 @@ void cSprite::renderCollisionBox()
 	//glVertex2f(boundingRect.right, boundingRect.bottom);
 	//glVertex2f(boundingRect.right, 0);
 	glBegin(GL_QUADS);
-	glVertex2f(0, 0);
-	glVertex2f(textureWidth, 0);
-	glVertex2f(textureWidth, textureHeight);
-	glVertex2f(0, textureHeight);
-
-
+	glVertex2f(boundingRect.left, boundingRect.top);
+	glVertex2f(boundingRect.right, boundingRect.top);
+	glVertex2f(boundingRect.right, boundingRect.bottom);
+	glVertex2f(boundingRect.left, boundingRect.bottom);
 	glEnd();
 
 	glPopMatrix();
+}
+
+glm::vec2 cSprite::getTextureSize()
+{
+	return glm::vec2(textureWidth, textureHeight);
+}
+
+glm::mat4x4 cSprite::getWorldMatrix()
+{
+	matrix = glm::mat4x4(1);
+	matrix = glm::translate(matrix, glm::vec3(spritePos2D.x, spritePos2D.y, 0));
+	matrix = glm::rotate(matrix, spriteRotation, glm::vec3(0, 0, 1));
+	matrix = glm::scale(matrix, glm::vec3(spriteScaling.x, spriteScaling.y, 1));
+	return matrix;
 }

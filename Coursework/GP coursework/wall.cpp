@@ -10,7 +10,6 @@ wall::wall()
 	cSprite::spriteScaling = glm::vec2(1.0f, 1.0f);
 	cSprite::spriteRotation = 0.0f;
 	cSprite::spriteCentre = glm::vec2(0.0f, 0.0f);
-	cSprite::setBoundingRect(&boundingRect);
 }
 
 
@@ -20,5 +19,5 @@ wall::~wall()
 
 void wall::update(float deltaTime)
 {
-	setBoundingRect(&boundingRect);
+	
 }
