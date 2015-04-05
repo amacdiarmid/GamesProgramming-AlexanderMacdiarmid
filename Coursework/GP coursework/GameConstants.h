@@ -37,7 +37,7 @@
 using namespace std;
 
 //Define the string to appear in the top left corner of the window
-#define WINDOW_TITLE "2 hoodlums ofer the wall"
+#define WINDOW_TITLE "2 hoodlums over the wall"
 
 // This header file contains all the constants & enumarated types for the game
 

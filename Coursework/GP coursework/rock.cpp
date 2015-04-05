@@ -16,8 +16,8 @@ void rock::throwIt(float Tangle, float Tpower, glm::vec2 TPlayerPos)
 	playerPos = TPlayerPos;
 	calculateArc();
 	updateBoundingRect();
-
-	/*cout << endl;
+	/*
+	cout << endl;
 	int width = getTextureSize().x;
 	int height = getTextureSize().y;
 	cout << width << " " << height << endl;
@@ -28,7 +28,8 @@ void rock::throwIt(float Tangle, float Tpower, glm::vec2 TPlayerPos)
 			cout << getTextPoint()->checkPixel(x, y) ? 1 : 0;
 		}
 		cout << endl;
-	}*/
+	}
+	*/
 }
 
 //destructor

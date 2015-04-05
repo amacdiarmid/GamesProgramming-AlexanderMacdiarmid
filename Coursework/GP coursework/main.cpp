@@ -8,22 +8,23 @@
 #include "windowOGL.h"
 #include "GameConstants.h"
 #include "cWNDManager.h"
+#include "cSoundMgr.h"
+#include "cFontMgr.h"
 #include "cInputMgr.h"
 #include "cSprite.h"
 #include "cBkGround.h"
 #include "player.h"
 #include "wall.h"
+#include "gameScene.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int cmdShow)
 {
+	/*
 	//for debug
 	AllocConsole();
 	AttachConsole(GetCurrentProcessId());
 	freopen("CON", "w", stdout);
-
-	//main variables
-	int difficulty = 1;
-	LPCSTR wallToUse[] = { "Images\\wall texture easy.png", "Images\\wall texture medium.png", "Images\\wall texture hard.png" };
+	*/
 
     //Set our window settings
     const int windowWidth = 1024;
@@ -36,7 +37,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	// This is the input manager
 	static cInputMgr* theInputMgr = cInputMgr::getInstance();
 
-	
+	// This is the sound manager
+	static cSoundMgr* theSoundMgr = cSoundMgr::getInstance();
+
+	// This is the Font manager
+	static cFontMgr* theFontMgr = cFontMgr::getInstance();
 
     //The example OpenGL code
     windowOGL theOGLWnd;	
@@ -66,6 +71,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	//Clear key buffers
 	theInputMgr->clearBuffers(theInputMgr->KEYS_DOWN_BUFFER | theInputMgr->KEYS_PRESSED_BUFFER);
 
+	//main variables
+	int difficulty = 1;
+	LPCSTR walls[] = { "Images\\wall texture easy.png", "Images\\wall texture medium.png", "Images\\wall texture hard.png" };
+	LPCSTR fonts[] = { "Fonts\\micross" };
+	LPCSTR sounds[] = { "Audio\\Kalimba", "Audio\\Rock on wall", "Audio\\bone break" };
+
+	// Load Sound
+	theSoundMgr->add("Theme", sounds[0]);
+	theSoundMgr->add("hitWall", sounds[1]);
+	theSoundMgr->add("hitPlayer", sounds[2]);
+	theSoundMgr->getSnd("Theme")->playAudio(AL_TRUE);
+
+	// Load Fonts
+	//theFontMgr->addFont("micross", fonts[0], 24);
+
 	//create textures
 	//background
 	cTexture *textureBkgd = new cTexture();
@@ -93,6 +113,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	//create player 1
 	player player1("alex");
 	player1.attachInputMgr(theInputMgr);
+	player1.attachSoundMgr(theSoundMgr);
 	player1.setSpritePos(glm::vec2(windowWidth * 0.25, windowHeight - (playerText->getTHeight() / 2)));
 	player1.setTexture(playerText->getTexture(), playerText);
 	player1.setTextureDimensions(playerText->getTWidth(), playerText->getTHeight());
@@ -105,6 +126,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	playerText2->createTexture("Images\\man texture.png");
 	player player2("not alex");
 	player2.attachInputMgr(theInputMgr);
+	player2.attachSoundMgr(theSoundMgr);
 	player2.setSpritePos(glm::vec2(windowWidth * 0.75, windowHeight - (playerText2->getTHeight() / 2)));
 	player2.setTexture(playerText2->getTexture(), playerText2);
 	player2.setTextureDimensions(playerText2->getTWidth(), playerText2->getTHeight());
@@ -112,6 +134,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	player2.attachArrowSprite();
 	player2.setActive(false);
 	player2.setMdlRadius();
+
+	gameScene theGameMgr(&player1, &player2, &spriteWall, theSoundMgr, windowWidth, windowHeight);
 	
 	//This is the mainloop, we render frames until isRunning returns false
 	while (pgmWNDMgr->isWNDRunning())
@@ -122,7 +146,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 		float elapsedTime = pgmWNDMgr->getElapsedSeconds();
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
+
 		spriteBkgd.render();
 
 		spriteWall.update(elapsedTime);
@@ -137,82 +161,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 		player2.update(elapsedTime);
 		player2.render();
 
-		//do game stuff here
-		//check the player 1 rock
-		if (player1.getRockThrown() == true)
-		{
-			//lock the player position
-			player1.setActive(false);
-			//see if the rock has collided with the other player 
-			if (player1.getRock()->collidedWith(player1.getRock()->getBoundingRect(), player2.getBoundingRect()))
-			{
-				//pixel collision
-				if (player1.getRock()->pixelCheck(player1.getRock(), &player2) == true)
-				{
-					//send player been hit message
-					player2.messagePlayerHit(player1.getName());
-					player1.getRock()->setActive(false);
-					player1.setThrownRock(false);
-					player2.setActive(true);
-				}
-				
-			}
-			//see if rock has collided with wall
-			else if (player1.getRock()->collidedWith(player1.getRock()->getBoundingRect(), spriteWall.getBoundingRect()))
-			{
-				if (player1.getRock()->pixelCheck(player1.getRock(), &spriteWall) == true)
-				{
-					//destroy rock 
-					player1.getRock()->setActive(false);
-					player1.setThrownRock(false);
-					player2.setActive(true);
-				}
-			}
-			//see if the rock has gone off screen
-			else if (player1.getRock()->getSpritePos().y >= windowHeight+100 || player1.getRock()->getSpritePos().x <= -100 || player1.getRock()->getSpritePos().x >= windowWidth+100)
-			{
-				player1.getRock()->setActive(false);
-				player1.setThrownRock(false);
-				player2.setActive(true);
-			}
-		}
-		else if (player2.getRockThrown() == true)
-		{
-			//lock the player position
-			player2.setActive(false);
-			//see if the rock has collided with the other player 
-			if (player2.getRock()->collidedWith(player2.getRock()->getBoundingRect(), player1.getBoundingRect()))
-			{
-				if (player2.getRock()->pixelCheck(player2.getRock(), &player1) == true)
-				{
-					//send player been hit message
-					player1.messagePlayerHit(player2.getName());
-					player2.getRock()->setActive(false);
-					player2.setThrownRock(false);
-					player1.setActive(true);
-				}
-					
-			}
-			//see if rock has collided with wall
-			else if (player2.getRock()->collidedWith(player2.getRock()->getBoundingRect(), spriteWall.getBoundingRect()))
-			{
-				if (player2.getRock()->pixelCheck(player2.getRock(), &spriteWall) == true)
-				{
-					//destroy rock 
-					player2.getRock()->setActive(false);
-					player2.setThrownRock(false);
-					player1.setActive(true);
-				}
-				
-			}
-			//see if the rock has gone off screen
-			else if (player2.getRock()->getSpritePos().y >= windowHeight + 100 || player2.getRock()->getSpritePos().x <= -100 || player2.getRock()->getSpritePos().x >= windowWidth + 100)
-			{
-				player1.getRock()->setActive(false);
-				player2.setThrownRock(false);
-				player1.setActive(true);
-			}
-		}
+		theGameMgr.checkPlayer();
+
+		//theFontMgr->getFont("micross")->printText(player1.getInfo().c_str(), FTPoint(0.0f, -1.0f, 0.0f));
+		//theFontMgr->getFont("micross")->printText(player2.getInfo().c_str(), FTPoint(windowWidth-100.0f, -1.0f, 0.0f));
 
 		pgmWNDMgr->swapBuffers();
 		theInputMgr->clearBuffers(theInputMgr->KEYS_DOWN_BUFFER | theInputMgr->KEYS_PRESSED_BUFFER);

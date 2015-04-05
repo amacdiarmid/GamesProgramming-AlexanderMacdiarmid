@@ -3,6 +3,7 @@
 #define _PLAYER_H
 #include <string>
 #include <iostream>
+#include <sstream>
 #include "cSprite.h"
 #include "arrow.h"
 #include "cInputMgr.h"
@@ -40,6 +41,7 @@ public:
 	bool getRockThrown();
 	void setThrownRock(bool);
 	rock* getRock();
+	string getInfo();
 
 	//message methods
 	void messagePlayerWin(string);	//display message on player win

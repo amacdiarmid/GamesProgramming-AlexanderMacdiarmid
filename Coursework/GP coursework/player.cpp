@@ -72,6 +72,12 @@ rock* player::getRock()
 {
 	return &thrownRock;
 }
+string player::getInfo()
+{
+	stringstream output;
+	output << "throws: " << throws << " health: " << health + " angle: " << angle << " power: " << power;
+	return output.str();
+}
 
 //message methods
 void player::messagePlayerWin(string name)
