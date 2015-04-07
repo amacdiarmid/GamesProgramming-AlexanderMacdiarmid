@@ -75,7 +75,7 @@ rock* player::getRock()
 string player::getInfo()
 {
 	stringstream output;
-	output << "throws: " << throws << " health: " << health + " angle: " << angle << " power: " << power;
+	output << "throws: " << throws << " health: " << health << " angle: " << angle << " power: " << power;
 	return output.str();
 }
 

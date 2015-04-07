@@ -1,5 +1,7 @@
 #pragma once
 #include "cSprite.h"
+#include <functional>
+
 class Button : public cSprite
 {
 private:
@@ -10,5 +12,6 @@ public:
 	~Button();
 
 	void update(float deltaTime)override;
+	bool getPressed();
 };
 

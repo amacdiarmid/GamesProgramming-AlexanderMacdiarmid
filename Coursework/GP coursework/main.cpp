@@ -16,15 +16,17 @@
 #include "player.h"
 #include "wall.h"
 #include "gameScene.h"
+#include "Button.h"
+#include <functional>
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int cmdShow)
 {
-	/*
+	
 	//for debug
 	AllocConsole();
 	AttachConsole(GetCurrentProcessId());
 	freopen("CON", "w", stdout);
-	*/
+	
 
     //Set our window settings
     const int windowWidth = 1024;
@@ -74,9 +76,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	//main variables
 	int difficulty = 1;
 	LPCSTR walls[] = { "Images\\wall texture easy.png", "Images\\wall texture medium.png", "Images\\wall texture hard.png" };
-	LPCSTR fonts[] = { "Fonts\\micross" };
+	LPCSTR fonts[] = { "Fonts\\micross.ttf" };
 	LPCSTR sounds[] = { "Audio\\Kalimba", "Audio\\Rock on wall", "Audio\\bone break" };
-	HWND playButton;
 
 	// Load Sound
 	theSoundMgr->add("Theme", sounds[0]);
@@ -85,9 +86,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	theSoundMgr->getSnd("Theme")->playAudio(AL_TRUE);
 
 	// Load Fonts
-	//theFontMgr->addFont("micross", fonts[0], 24);
+	theFontMgr->addFont("micross", fonts[0], 24);
 
 	//create textures
+	//create buttons
+	//play button
+	cTexture *playTxt = new cTexture();
+	playTxt->createTexture("Images\\PlayButton.png");
+	Button playButton;
+	playButton.setSpritePos(glm::vec2(windowWidth / 2, windowHeight / 2));
+	playButton.setTexture(playTxt->getTexture(), playTxt);
+	playButton.setTextureDimensions(playTxt->getTWidth(), playTxt->getTHeight());
+	playButton.attachInputMgr(theInputMgr);
+
 	//background
 	cTexture *textureBkgd = new cTexture();
 	textureBkgd->createTexture("Images\\background.png");
@@ -136,7 +147,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	player2.setActive(false);
 	player2.setMdlRadius();
 
-	gameScene theGameMgr(&player1, &player2, &spriteWall, theSoundMgr, windowWidth, windowHeight);
+	gameScene theGameMgr(&player1, &player2, &spriteWall, theSoundMgr, windowWidth, windowHeight, []() { cout << "test"; });
 	
 	//This is the mainloop, we render frames until isRunning returns false
 	while (pgmWNDMgr->isWNDRunning())
@@ -156,7 +167,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 		if (theGameMgr.mainMenu() == true)
 		{
 			//show menu
-			//playButton = CreateWindow("BUTTON", "play", WS_VISIBLE | WS_CHILD, 10, 10, 100, 20, hwnd, NULL, NULL, NULL);
+			if (playButton.getPressed() == true)
+			{
+				theGameMgr.setMain();
+			}
+			else
+			{
+				playButton.update(elapsedTime);
+				playButton.render();
+			}
+			
 		}
 		else if (theGameMgr.ReplyMenu() == true)
 		{
@@ -175,12 +195,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 			//player 2
 			player2.update(elapsedTime);
 			player2.render();
+
 			theGameMgr.checkPlayer();
 		}
 		
 
-		//theFontMgr->getFont("micross")->printText(player1.getInfo().c_str(), FTPoint(0.0f, -1.0f, 0.0f));
-		//theFontMgr->getFont("micross")->printText(player2.getInfo().c_str(), FTPoint(windowWidth-100.0f, -1.0f, 0.0f));
+		theFontMgr->getFont("micross")->printText(player1.getInfo().c_str(), FTPoint(0.0f, -25.0f, 0.0f));
+		theFontMgr->getFont("micross")->printText(player2.getInfo().c_str(), FTPoint(windowWidth-410.0f, -25.0f, 0.0f));
 
 		pgmWNDMgr->swapBuffers();
 		theInputMgr->clearBuffers(theInputMgr->KEYS_DOWN_BUFFER | theInputMgr->KEYS_PRESSED_BUFFER);

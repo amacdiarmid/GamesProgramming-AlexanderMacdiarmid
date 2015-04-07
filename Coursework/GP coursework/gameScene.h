@@ -5,6 +5,7 @@
 #include "cSoundMgr.h"
 #include "rock.h"
 #include <Windows.h>
+#include <functional>
 
 class gameScene
 {
@@ -17,16 +18,19 @@ private:
 	cSoundMgr* theSoundMgr;
 	int windowWidth;
 	int windowHeight;
+	std::function<void()> playButton;
 
 public:
 	gameScene();
-	gameScene(player* P1, player* P2, wall* curWall, cSoundMgr* soundMgr, int winWid, int winHei);
+	gameScene(player* P1, player* P2, wall* curWall, cSoundMgr* soundMgr, int winWid, int winHei, std::function<void()> playBut);
 	~gameScene();
 	
 	//gameloop
 	bool mainMenu();
 	bool ReplyMenu();
 	void checkPlayer();
+	void setMain();
+	void setReplay();
 
 };
 

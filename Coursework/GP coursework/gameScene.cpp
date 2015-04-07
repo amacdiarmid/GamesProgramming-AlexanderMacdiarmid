@@ -1,11 +1,10 @@
 #include "gameScene.h"
 
-
 gameScene::gameScene()
 {
 }
 
-gameScene::gameScene(player* P1, player* P2, wall* curWall, cSoundMgr* soundMgr, int winWid, int winHei)
+gameScene::gameScene(player* P1, player* P2, wall* curWall, cSoundMgr* soundMgr, int winWid, int winHei, std::function<void()> playBut)
 {
 	player1 = P1;
 	player2 = P2;
@@ -132,4 +131,17 @@ void gameScene::checkPlayer()
 		}
 	}
 
+}
+
+void gameScene::setMain()
+{
+	cout << menu << endl;
+	if (menu == true)
+	{
+		menu = false;
+	}
+	else
+	{
+		menu = true;
+	}
 }
