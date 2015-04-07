@@ -26,15 +26,11 @@ bool gameScene::mainMenu()
 	if (menu == true)
 	{
 		//show menu
-		CreateWindow(TEXT("button"), TEXT("Play"),
-			WS_VISIBLE | WS_CHILD,
-			(windowWidth / 2) - 40, (windowHeight / 2) - 20, 80, 40
-
-			)
+		return true;
 	}
 	else
 	{
-		return true;
+		return false;
 	}
 }
 
@@ -43,10 +39,11 @@ bool gameScene::ReplyMenu()
 	if (replay == true)
 	{
 		//show menu
+		return true;
 	}
 	else
 	{
-		return true;
+		return false;
 	}
 }
 

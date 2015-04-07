@@ -1,4 +1,5 @@
 #pragma once
+#include "GameConstants.h"
 #include "player.h"
 #include "wall.h"
 #include "cSoundMgr.h"

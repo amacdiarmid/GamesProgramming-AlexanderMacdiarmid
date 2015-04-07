@@ -76,6 +76,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	LPCSTR walls[] = { "Images\\wall texture easy.png", "Images\\wall texture medium.png", "Images\\wall texture hard.png" };
 	LPCSTR fonts[] = { "Fonts\\micross" };
 	LPCSTR sounds[] = { "Audio\\Kalimba", "Audio\\Rock on wall", "Audio\\bone break" };
+	HWND playButton;
 
 	// Load Sound
 	theSoundMgr->add("Theme", sounds[0]);
@@ -111,7 +112,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	playerText->createTexture("Images\\man texture.png");
 
 	//create player 1
-	player player1("alex");
+	player player1("player 1");
 	player1.attachInputMgr(theInputMgr);
 	player1.attachSoundMgr(theSoundMgr);
 	player1.setSpritePos(glm::vec2(windowWidth * 0.25, windowHeight - (playerText->getTHeight() / 2)));
@@ -124,7 +125,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 
 	cTexture *playerText2 = new cTexture();
 	playerText2->createTexture("Images\\man texture.png");
-	player player2("not alex");
+	player player2("player 2");
 	player2.attachInputMgr(theInputMgr);
 	player2.attachSoundMgr(theSoundMgr);
 	player2.setSpritePos(glm::vec2(windowWidth * 0.75, windowHeight - (playerText2->getTHeight() / 2)));
@@ -140,6 +141,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	//This is the mainloop, we render frames until isRunning returns false
 	while (pgmWNDMgr->isWNDRunning())
     {
+
 		pgmWNDMgr->processWNDEvents(); //Process any window events
 
         //We get the time that passed since the last frame
@@ -149,19 +151,33 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 
 		spriteBkgd.render();
 
-		spriteWall.update(elapsedTime);
-		spriteWall.render();
-		spriteWall.renderCollisionBox();
 		
-		//player 1
-		player1.update(elapsedTime);
-		player1.render();
 
-		//player 2
-		player2.update(elapsedTime);
-		player2.render();
+		if (theGameMgr.mainMenu() == true)
+		{
+			//show menu
+			//playButton = CreateWindow("BUTTON", "play", WS_VISIBLE | WS_CHILD, 10, 10, 100, 20, hwnd, NULL, NULL, NULL);
+		}
+		else if (theGameMgr.ReplyMenu() == true)
+		{
 
-		theGameMgr.checkPlayer();
+		}
+		else
+		{
+			spriteWall.update(elapsedTime);
+			spriteWall.render();
+			spriteWall.renderCollisionBox();
+		
+			//player 1
+			player1.update(elapsedTime);
+			player1.render();
+
+			//player 2
+			player2.update(elapsedTime);
+			player2.render();
+			theGameMgr.checkPlayer();
+		}
+		
 
 		//theFontMgr->getFont("micross")->printText(player1.getInfo().c_str(), FTPoint(0.0f, -1.0f, 0.0f));
 		//theFontMgr->getFont("micross")->printText(player2.getInfo().c_str(), FTPoint(windowWidth-100.0f, -1.0f, 0.0f));
