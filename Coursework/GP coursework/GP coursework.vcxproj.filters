@@ -157,5 +157,14 @@
     <Image Include="Images\wall texture medium.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Images\PlayButton.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\QuitButton.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\ReplayButton.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

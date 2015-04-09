@@ -131,11 +131,16 @@ void gameScene::checkPlayer()
 		}
 	}
 
+	if (player1->getDead() == true || player2->getDead() == true)
+	{
+		
+		setReplay();
+	}
+
 }
 
 void gameScene::setMain()
 {
-	cout << menu << endl;
 	if (menu == true)
 	{
 		menu = false;
@@ -143,5 +148,33 @@ void gameScene::setMain()
 	else
 	{
 		menu = true;
+	}
+}
+
+void gameScene::setReplay()
+{
+	if (replay == true)
+	{
+		replay = false;
+	}
+	else
+	{
+		replay = true;
+	}
+}
+
+string gameScene::getWinner()
+{
+	if (player1->getDead() == true)
+	{
+		return player2->getName() + " is the winner!";
+	}
+	else if (player2->getDead() == true)
+	{
+		return player1->getName() + " is the winner!";
+	}
+	else
+	{
+		return "ERROR in winner";
 	}
 }

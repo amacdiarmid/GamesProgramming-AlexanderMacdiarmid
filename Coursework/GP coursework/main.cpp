@@ -99,6 +99,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	playButton.setTextureDimensions(playTxt->getTWidth(), playTxt->getTHeight());
 	playButton.attachInputMgr(theInputMgr);
 
+	//Replay button
+	cTexture *replayTxt = new cTexture();
+	replayTxt->createTexture("Images\\ReplayButton.png");
+	Button replayButton;
+	replayButton.setSpritePos(glm::vec2(windowWidth / 2, windowHeight / 2));
+	replayButton.setTexture(replayTxt->getTexture(), replayTxt);
+	replayButton.setTextureDimensions(replayTxt->getTWidth(), replayTxt->getTHeight());
+	replayButton.attachInputMgr(theInputMgr);
+
+	//quit button
+	cTexture *quitTxt = new cTexture();
+	quitTxt->createTexture("Images\\QuitButton.png");
+	Button quitButton;
+	quitButton.setSpritePos(glm::vec2(windowWidth / 2, windowHeight / 2 + 40));
+	quitButton.setTexture(quitTxt->getTexture(), quitTxt);
+	quitButton.setTextureDimensions(quitTxt->getTWidth(), quitTxt->getTHeight());
+	quitButton.attachInputMgr(theInputMgr);
+
 	//background
 	cTexture *textureBkgd = new cTexture();
 	textureBkgd->createTexture("Images\\background.png");
@@ -126,6 +144,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	player player1("player 1");
 	player1.attachInputMgr(theInputMgr);
 	player1.attachSoundMgr(theSoundMgr);
+	player1.attatchFontmgr(theFontMgr);
 	player1.setSpritePos(glm::vec2(windowWidth * 0.25, windowHeight - (playerText->getTHeight() / 2)));
 	player1.setTexture(playerText->getTexture(), playerText);
 	player1.setTextureDimensions(playerText->getTWidth(), playerText->getTHeight());
@@ -133,12 +152,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	player1.attachArrowSprite();
 	player1.setActive(true);
 	player1.setMdlRadius();
+	player1.setLimits(0, (windowWidth / 2) - (textureWall->getTWidth() / 2));
 
 	cTexture *playerText2 = new cTexture();
 	playerText2->createTexture("Images\\man texture.png");
 	player player2("player 2");
 	player2.attachInputMgr(theInputMgr);
 	player2.attachSoundMgr(theSoundMgr);
+	player2.attatchFontmgr(theFontMgr);
 	player2.setSpritePos(glm::vec2(windowWidth * 0.75, windowHeight - (playerText2->getTHeight() / 2)));
 	player2.setTexture(playerText2->getTexture(), playerText2);
 	player2.setTextureDimensions(playerText2->getTWidth(), playerText2->getTHeight());
@@ -146,6 +167,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	player2.attachArrowSprite();
 	player2.setActive(false);
 	player2.setMdlRadius();
+	player2.setLimits((windowWidth / 2) + (textureWall->getTWidth() / 2), windowWidth);
 
 	gameScene theGameMgr(&player1, &player2, &spriteWall, theSoundMgr, windowWidth, windowHeight, []() { cout << "test"; });
 	
@@ -180,13 +202,27 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 		}
 		else if (theGameMgr.ReplyMenu() == true)
 		{
-
+			theFontMgr->getFont("micross")->printText(theGameMgr.getWinner().c_str(), FTPoint(400.0f, -45.0f, 0.0f));
+			if (replayButton.getPressed() == true)
+			{
+				theGameMgr.setReplay();
+				player1.reset();
+				player2.reset();
+			}
+			else if (quitButton.getPressed() == true)
+			{
+				return 0;
+			}
+			else
+			{
+				replayButton.update(elapsedTime);
+				replayButton.render();
+			}
 		}
 		else
 		{
 			spriteWall.update(elapsedTime);
 			spriteWall.render();
-			spriteWall.renderCollisionBox();
 		
 			//player 1
 			player1.update(elapsedTime);
@@ -197,11 +233,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 			player2.render();
 
 			theGameMgr.checkPlayer();
-		}
-		
 
-		theFontMgr->getFont("micross")->printText(player1.getInfo().c_str(), FTPoint(0.0f, -25.0f, 0.0f));
-		theFontMgr->getFont("micross")->printText(player2.getInfo().c_str(), FTPoint(windowWidth-410.0f, -25.0f, 0.0f));
+			theFontMgr->getFont("micross")->printText(player1.getInfo().c_str(), FTPoint(0.0f, -25.0f, 0.0f));
+			theFontMgr->getFont("micross")->printText(player2.getInfo().c_str(), FTPoint(windowWidth - 410.0f, -25.0f, 0.0f));
+
+		}	
 
 		pgmWNDMgr->swapBuffers();
 		theInputMgr->clearBuffers(theInputMgr->KEYS_DOWN_BUFFER | theInputMgr->KEYS_PRESSED_BUFFER);

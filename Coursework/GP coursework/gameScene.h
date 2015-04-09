@@ -32,5 +32,8 @@ public:
 	void setMain();
 	void setReplay();
 
+	//message loop 
+	string getWinner();
+
 };
 

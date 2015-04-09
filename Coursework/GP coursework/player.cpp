@@ -4,21 +4,7 @@ using namespace std;
 //constructor
 player::player()
 {
-	cSprite::spritePos2D.x = 0.0f;
-	cSprite::spritePos2D.y = 0.0f;
-	cSprite::setSpriteTexCoordData();
-	cSprite::spriteTranslation = glm::vec2(0.0f, 0.0f);
-	cSprite::spriteScaling = glm::vec2(1.0f, 1.0f);
-	cSprite::spriteRotation = 0.0f;
-	playerName = "default";			
-	throws = 0;					
-	health = 3;				
-	angle = 0;				
-	power = 0;
-	playerSpeed = glm::vec2(1.0f, 0.0f);
-	playerRotation = 1.0f;
-	rockThrown = false;
-	updateBoundingRect();
+	cout << "should not be called";
 }
 player::player(string name)
 {
@@ -36,6 +22,7 @@ player::player(string name)
 	playerSpeed = glm::vec2(5.0f, 0.0f);
 	playerRotation = 1.0f;
 	rockThrown = false;
+	dead = false;
 	updateBoundingRect();
 }
 
@@ -75,14 +62,21 @@ rock* player::getRock()
 string player::getInfo()
 {
 	stringstream output;
-	output << "throws: " << throws << " health: " << health << " angle: " << angle << " power: " << power;
+	output << "throws: " << throws << " health: " << health << " angle: " << angle+90 << " power: " << power;
 	return output.str();
+}
+
+bool player::getDead()
+{
+	return dead;
 }
 
 //message methods
 void player::messagePlayerWin(string name)
 {
-	cout << name << " killed " << playerName << endl;
+	output = name + " Killed " + playerName;
+	showOutput = true;
+	dead = true;
 }
 void player::messagePlayerHit(string name)
 {
@@ -93,7 +87,8 @@ void player::messagePlayerHit(string name)
 	}
 	else
 	{
-		cout << name << " hit " << playerName << endl;
+		output = name + " Hit " + playerName;
+		showOutput = true;
 	}
 }
 
@@ -111,6 +106,10 @@ void player::attachArrowSprite()
 	arrowSprite.setTexture(playerArrow->getTexture(), playerArrow);
 	arrowSprite.setTextureDimensions(playerArrow->getTWidth(), playerArrow->getTHeight());
 	arrowSprite.setSpriteCentre();
+}
+void player::attatchFontmgr(cFontMgr* fontMgr)
+{
+	theFontMgr = fontMgr;
 }
 
 //update
@@ -192,6 +191,10 @@ void player::render()
 	{
 		thrownRock.render();
 	}
+	if (showOutput == true)
+	{
+		theFontMgr->getFont("micross")->printText(output.c_str(), FTPoint(400.0f, -45.0f, 0.0f));
+	}
 }
 
 //action methods
@@ -229,18 +232,26 @@ void player::powerDown()
 }
 void player::moveLeft()
 {
-	setSpritePos(getSpritePos() - playerSpeed);
-	arrowSprite.setSpritePos(arrowSprite.getSpritePos() - playerSpeed);
+	if (getSpritePos().x > minX)
+	{
+		setSpritePos(getSpritePos() - playerSpeed);
+		arrowSprite.setSpritePos(arrowSprite.getSpritePos() - playerSpeed);
+	}
+	
 }
 void player::moveRight()
 {
-	setSpritePos(getSpritePos() + playerSpeed);
-	arrowSprite.setSpritePos(arrowSprite.getSpritePos() + playerSpeed);
+	if (getSpritePos().x < maxX)
+	{
+		setSpritePos(getSpritePos() + playerSpeed);
+		arrowSprite.setSpritePos(arrowSprite.getSpritePos() + playerSpeed);
+	}
 }
 void player::throwRock()
 {
 	throws++;
 	rockThrown = true;
+	showOutput = false;
 	cTexture *playerRock = new cTexture();
 	playerRock->createTexture("Images\\rock texture.png");
 	thrownRock.setSpritePos(glm::vec2(getSpritePos().x, getSpritePos().y - (textureHeight / 2)));
@@ -250,4 +261,23 @@ void player::throwRock()
 	thrownRock.setMdlRadius();
 	thrownRock.throwIt(angle, power, spritePos2D);
 	active = false;
+}
+
+void player::reset()
+{
+	throws = 0;
+	health = 3;
+	angle = 0;
+	power = 250;
+	playerSpeed = glm::vec2(5.0f, 0.0f);
+	playerRotation = 1.0f;
+	rockThrown = false;
+	dead = false;
+	updateBoundingRect();
+}
+
+void player::setLimits(int min, int max)
+{
+	minX = min;
+	maxX = max;
 }

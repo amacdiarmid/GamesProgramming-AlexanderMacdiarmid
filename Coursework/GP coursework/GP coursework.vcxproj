@@ -116,6 +116,9 @@
     <Image Include="Images\arrow texture.png" />
     <Image Include="Images\background.png" />
     <Image Include="Images\man texture.png" />
+    <Image Include="Images\PlayButton.png" />
+    <Image Include="Images\QuitButton.png" />
+    <Image Include="Images\ReplayButton.png" />
     <Image Include="Images\rock texture.png" />
     <Image Include="Images\wall texture easy.png" />
     <Image Include="Images\wall texture hard.png" />

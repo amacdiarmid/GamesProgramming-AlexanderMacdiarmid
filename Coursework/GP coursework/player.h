@@ -7,6 +7,7 @@
 #include "cSprite.h"
 #include "arrow.h"
 #include "cInputMgr.h"
+#include "cFontMgr.h"
 #include "rock.h"
 using namespace std;
 
@@ -21,10 +22,17 @@ private:
 	glm::vec2 playerSpeed;
 	float playerRotation;
 	cInputMgr* m_InputMgr;
+	cFontMgr* theFontMgr;
 	arrow arrowSprite;
 	rock thrownRock;
 	bool active;
 	bool rockThrown;
+	string output;
+	bool showOutput;
+	bool dead;
+	int minX;
+	int maxX;
+	
 
 public:
 	//constructor
@@ -42,6 +50,7 @@ public:
 	void setThrownRock(bool);
 	rock* getRock();
 	string getInfo();
+	bool getDead();
 
 	//message methods
 	void messagePlayerWin(string);	//display message on player win
@@ -54,6 +63,7 @@ public:
 	//attach
 	void attachInputMgr(cInputMgr* inputMgr);
 	void attachArrowSprite();
+	void attatchFontmgr(cFontMgr* fontMgr);
 
 	//action methods
 	void angleUp();			//change the current angle up/down
@@ -63,5 +73,7 @@ public:
 	void moveLeft();		//move the player left/right
 	void moveRight();			
 	void throwRock();		//throw rocks
+	void reset();			//reset to default values
+	void setLimits(int min, int max);
 };
 #endif

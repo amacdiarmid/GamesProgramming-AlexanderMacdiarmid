@@ -18,7 +18,6 @@ void Button::update(float deltaTime)
 		glm::vec2 areaClicked = glm::vec2(m_InputMgr->getMouseXPos(), m_InputMgr->getMouseYPos());
 		if (areaClicked.x > spritePos2D.x - (textureWidth / 2) && areaClicked.x < spritePos2D.x + (textureWidth / 2) && areaClicked.y > spritePos2D.y - (textureHeight / 2) && areaClicked.y < spritePos2D.y + (textureHeight / 2))
 		{
-			cout << pressed << " clicked" << endl;
 			pressed = true;
 		}
 	}
@@ -26,6 +25,5 @@ void Button::update(float deltaTime)
 
 bool Button::getPressed()
 {
-	cout << pressed << endl;
 	return pressed;
 }
