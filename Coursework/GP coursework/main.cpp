@@ -112,7 +112,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	cTexture *quitTxt = new cTexture();
 	quitTxt->createTexture("Images\\QuitButton.png");
 	Button quitButton;
-	quitButton.setSpritePos(glm::vec2(windowWidth / 2, windowHeight / 2 + 40));
+	quitButton.setSpritePos(glm::vec2(windowWidth / 2, windowHeight / 2 + quitTxt->getTHeight() + 20));
 	quitButton.setTexture(quitTxt->getTexture(), quitTxt);
 	quitButton.setTextureDimensions(quitTxt->getTWidth(), quitTxt->getTHeight());
 	quitButton.attachInputMgr(theInputMgr);
@@ -197,6 +197,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 			{
 				playButton.update(elapsedTime);
 				playButton.render();
+				theFontMgr->getFont("micross")->printText("Move: A and D", FTPoint(windowWidth/2 - 50.0f, -windowHeight / 2 - 65.0f, 0.0f));
+				theFontMgr->getFont("micross")->printText("Aim: W and S", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 - 85.0f, 0.0f));
+				theFontMgr->getFont("micross")->printText("Power: Q and E", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 - 105.0f, 0.0f));
+				theFontMgr->getFont("micross")->printText("Throw: Space", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 - 125.0f, 0.0f));
 			}
 			
 		}
@@ -217,6 +221,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 			{
 				replayButton.update(elapsedTime);
 				replayButton.render();
+				quitButton.update(elapsedTime);
+				quitButton.render();
 			}
 		}
 		else
@@ -235,7 +241,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 			theGameMgr.checkPlayer();
 
 			theFontMgr->getFont("micross")->printText(player1.getInfo().c_str(), FTPoint(0.0f, -25.0f, 0.0f));
-			theFontMgr->getFont("micross")->printText(player2.getInfo().c_str(), FTPoint(windowWidth - 410.0f, -25.0f, 0.0f));
+			theFontMgr->getFont("micross")->printText(player2.getInfo().c_str(), FTPoint(windowWidth - 430.0f, -25.0f, 0.0f));
 
 		}	
 

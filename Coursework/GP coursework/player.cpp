@@ -274,6 +274,8 @@ void player::reset()
 	rockThrown = false;
 	dead = false;
 	updateBoundingRect();
+	arrowSprite.reset();
+	showOutput = false;
 }
 
 void player::setLimits(int min, int max)

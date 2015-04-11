@@ -65,3 +65,8 @@ void arrow::setSpriteLength(float length)
 {
 	arrowLength += length;
 }
+void arrow::reset()
+{
+	arrowLength = 0;
+	spriteRotation = 0;
+}

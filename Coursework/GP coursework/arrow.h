@@ -17,5 +17,6 @@ public:
 	void render()override;
 	void setSpriteRotaion(float rotation, glm::vec2 playerCen);
 	void setSpriteLength(float length);
+	void reset();
 };
 #endif
