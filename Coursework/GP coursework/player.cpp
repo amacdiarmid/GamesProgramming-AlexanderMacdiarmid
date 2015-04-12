@@ -1,6 +1,10 @@
 #include "player.h"
 using namespace std;
 
+#define XINPUT_GAMEPAD_TRIGGER_THRESHOLD    250
+#define XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE  7849
+#define PI 3.14159265
+
 //constructor
 player::player()
 {
@@ -62,7 +66,7 @@ rock* player::getRock()
 string player::getInfo()
 {
 	stringstream output;
-	output << "throws: " << throws << " health: " << health << " angle: " << angle+90 << " power: " << power;
+	output << "throws: " << throws << " health: " << health << " angle: " << angle +90 << " power: " << power;
 	return output.str();
 }
 
@@ -74,6 +78,7 @@ bool player::getDead()
 //message methods
 void player::messagePlayerWin(string name)
 {
+	m_InputMgr->Vibrate(1,1);
 	output = name + " Killed " + playerName;
 	showOutput = true;
 	dead = true;
@@ -87,6 +92,7 @@ void player::messagePlayerHit(string name)
 	}
 	else
 	{
+		m_InputMgr->Vibrate(1,1);
 		output = name + " Hit " + playerName;
 		showOutput = true;
 	}
@@ -118,11 +124,11 @@ void player::update(float deltaTime)
 	if (active == true)
 	{
 		//move left and right 
-		if (m_InputMgr->isKeyDown('D'))
+		if (m_InputMgr->isKeyDown('D') || m_InputMgr->getController().Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
 		{
 			moveRight();
 		}
-		if (m_InputMgr->isKeyDown('A'))
+		if (m_InputMgr->isKeyDown('A') || m_InputMgr->getController().Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)
 		{
 			moveLeft();
 		}
@@ -136,18 +142,23 @@ void player::update(float deltaTime)
 			angleDown();
 		}
 		//adjust power
-		if (m_InputMgr->isKeyDown('Q'))
+		if (m_InputMgr->isKeyDown('Q') || m_InputMgr->getController().Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
 		{
 			powerUp();
 		}
-		if (m_InputMgr->isKeyDown('E'))
+		if (m_InputMgr->isKeyDown('E') || m_InputMgr->getController().Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
 		{
 			powerDown();
 		}
 		//throw rock
-		if (m_InputMgr->isKeyDown(VK_SPACE))
+		if (m_InputMgr->isKeyDown(VK_SPACE) || m_InputMgr->getController().Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
 		{
 			throwRock();
+		}
+		//set the angle
+		if (m_InputMgr->detectController() == true)
+		{
+			setRotation();
 		}
 	}
 
@@ -200,34 +211,36 @@ void player::render()
 //action methods
 void player::angleUp()
 {
-	if (angle < 90)
+	angle++;
+	arrowSprite.setSpriteRotaion(-1.0f, getSpriteCentre());
+	if (angle == 361)
 	{
-		angle++;
-		arrowSprite.setSpriteRotaion(-1.0f, getSpriteCentre());
+		angle -= 360;
 	}
 }
 void player::angleDown()
 {
-	if (angle > -90)
+	angle--;
+	arrowSprite.setSpriteRotaion(1.0f, getSpriteCentre());
+	if (angle == -361)
 	{
-		angle--;
-		arrowSprite.setSpriteRotaion(1.0f, getSpriteCentre());
+		angle += 360;
 	}
 }
 void player::powerUp()
 {
-	if (power < 10)
+	if (power < 500)
 	{
 		power++;
-		arrowSprite.setSpriteLength(-5.0f);
+		arrowSprite.setSpriteLength(-1.0f);
 	}
 }
 void player::powerDown()
 {
-	if (power > 1)
+	if (power > 100)
 	{
 		power--;
-		arrowSprite.setSpriteLength(5.0f);
+		arrowSprite.setSpriteLength(1.0f);
 	}
 }
 void player::moveLeft()
@@ -247,6 +260,58 @@ void player::moveRight()
 		arrowSprite.setSpritePos(arrowSprite.getSpritePos() + playerSpeed);
 	}
 }
+
+void player::setRotation()
+{
+	XINPUT_STATE state = m_InputMgr->getController();
+
+	float LX = state.Gamepad.sThumbLX;
+	float LY = state.Gamepad.sThumbLY;
+
+	float magnitude = sqrt(LX*LX + LY*LY);
+
+	float normalisedLX = LX / magnitude;
+	float normalisedLY = LY / magnitude;
+
+	float normalisedMagnitude = 0;
+
+	if (magnitude > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+	{
+		int tAngle;
+		tAngle = atan(normalisedLY / normalisedLX) * 180 / PI;
+		
+		if (normalisedLX > 0 && normalisedLY > 0)
+		{
+			//0-90
+			angle = tAngle -90;
+		}
+		else if (normalisedLX > 0 && normalisedLY < 0)
+		{
+			//270-360
+			angle = tAngle + 270;
+		}
+		else if (normalisedLX < 0 && normalisedLY < 0)
+		{
+			//180-270
+			angle = tAngle + 90;
+		}
+		else if (normalisedLX < 0 && normalisedLY > 0)
+		{
+			//90-180
+			angle = tAngle + 90;
+		}
+
+		cout << angle << endl;
+		angle - 90;
+		arrowSprite.setRotation(angle);
+	}
+	else
+	{
+		magnitude = 0;
+		normalisedMagnitude = 0;
+	}
+}
+
 void player::throwRock()
 {
 	throws++;
@@ -261,6 +326,7 @@ void player::throwRock()
 	thrownRock.setMdlRadius();
 	thrownRock.throwIt(angle, power, spritePos2D);
 	active = false;
+	m_InputMgr->Vibrate(65535/100, 65535/100);
 }
 
 void player::reset()

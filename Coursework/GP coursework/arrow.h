@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include "cSprite.h"
+#include <math.h>
 class arrow : public cSprite
 {
 protected:
@@ -18,5 +19,6 @@ public:
 	void setSpriteRotaion(float rotation, glm::vec2 playerCen);
 	void setSpriteLength(float length);
 	void reset();
+	void setRotation(int angle);
 };
 #endif

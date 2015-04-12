@@ -1,9 +1,10 @@
 #include "Button.h"
 
 
-Button::Button()
+Button::Button(char tButton)
 {
 	pressed = false;
+	controllerButton = tButton;
 }
 
 
@@ -18,6 +19,23 @@ void Button::update(float deltaTime)
 		glm::vec2 areaClicked = glm::vec2(m_InputMgr->getMouseXPos(), m_InputMgr->getMouseYPos());
 		if (areaClicked.x > spritePos2D.x - (textureWidth / 2) && areaClicked.x < spritePos2D.x + (textureWidth / 2) && areaClicked.y > spritePos2D.y - (textureHeight / 2) && areaClicked.y < spritePos2D.y + (textureHeight / 2))
 		{
+			pressed = true;
+		}
+	}
+	if (controllerButton == 'A')
+	{
+		
+		if (m_InputMgr->getController().Gamepad.wButtons & XINPUT_GAMEPAD_A)
+		{
+			cout << "pressed A button";
+			pressed = true;
+		}
+	}
+	else if (controllerButton == 'B')
+	{
+		if (m_InputMgr->getController().Gamepad.wButtons & XINPUT_GAMEPAD_B)
+		{
+			cout << "pressed B button";
 			pressed = true;
 		}
 	}

@@ -38,6 +38,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 
 	// This is the input manager
 	static cInputMgr* theInputMgr = cInputMgr::getInstance();
+	theInputMgr->detectController();
 
 	// This is the sound manager
 	static cSoundMgr* theSoundMgr = cSoundMgr::getInstance();
@@ -93,7 +94,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	//play button
 	cTexture *playTxt = new cTexture();
 	playTxt->createTexture("Images\\PlayButton.png");
-	Button playButton;
+	Button playButton('A');
 	playButton.setSpritePos(glm::vec2(windowWidth / 2, windowHeight / 2));
 	playButton.setTexture(playTxt->getTexture(), playTxt);
 	playButton.setTextureDimensions(playTxt->getTWidth(), playTxt->getTHeight());
@@ -102,7 +103,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	//Replay button
 	cTexture *replayTxt = new cTexture();
 	replayTxt->createTexture("Images\\ReplayButton.png");
-	Button replayButton;
+	Button replayButton('A');
 	replayButton.setSpritePos(glm::vec2(windowWidth / 2, windowHeight / 2));
 	replayButton.setTexture(replayTxt->getTexture(), replayTxt);
 	replayButton.setTextureDimensions(replayTxt->getTWidth(), replayTxt->getTHeight());
@@ -111,7 +112,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	//quit button
 	cTexture *quitTxt = new cTexture();
 	quitTxt->createTexture("Images\\QuitButton.png");
-	Button quitButton;
+	Button quitButton('B');
 	quitButton.setSpritePos(glm::vec2(windowWidth / 2, windowHeight / 2 + quitTxt->getTHeight() + 20));
 	quitButton.setTexture(quitTxt->getTexture(), quitTxt);
 	quitButton.setTextureDimensions(quitTxt->getTWidth(), quitTxt->getTHeight());
@@ -197,10 +198,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 			{
 				playButton.update(elapsedTime);
 				playButton.render();
-				theFontMgr->getFont("micross")->printText("Move: A and D", FTPoint(windowWidth/2 - 50.0f, -windowHeight / 2 - 65.0f, 0.0f));
-				theFontMgr->getFont("micross")->printText("Aim: W and S", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 - 85.0f, 0.0f));
-				theFontMgr->getFont("micross")->printText("Power: Q and E", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 - 105.0f, 0.0f));
-				theFontMgr->getFont("micross")->printText("Throw: Space", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 - 125.0f, 0.0f));
+				if (theInputMgr->detectController()==true)
+				{
+					theFontMgr->getFont("micross")->printText("Move: Left and right on the D-pad", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 - 65.0f, 0.0f));
+					theFontMgr->getFont("micross")->printText("Aim: left stick", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 - 85.0f, 0.0f));
+					theFontMgr->getFont("micross")->printText("Power: left and right bumpers", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 - 105.0f, 0.0f));
+					theFontMgr->getFont("micross")->printText("Throw: RT", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 - 125.0f, 0.0f));
+				}
+				else
+				{
+					theFontMgr->getFont("micross")->printText("Move: A and D", FTPoint(windowWidth/2 - 50.0f, -windowHeight / 2 - 65.0f, 0.0f));
+					theFontMgr->getFont("micross")->printText("Aim: W and S", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 - 85.0f, 0.0f));
+					theFontMgr->getFont("micross")->printText("Power: Q and E", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 - 105.0f, 0.0f));
+					theFontMgr->getFont("micross")->printText("Throw: Space", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 - 125.0f, 0.0f));
+				}
 			}
 			
 		}

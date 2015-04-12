@@ -245,3 +245,39 @@ bool cInputMgr::getRightMouseBtn()
 	return rightMouseBtn;
 }
 
+//controller stuff
+
+bool cInputMgr::detectController()
+{
+	ZeroMemory(&state, sizeof(XINPUT_STATE));
+	dwResult = XInputGetState(0, &state);
+	if (dwResult == ERROR_SUCCESS)
+	{
+		return true;
+		cout << "detect Controller \n";
+	}
+	else
+	{
+		return false;
+		cout << "no controller \n";
+	}
+}
+
+XINPUT_STATE cInputMgr::getController()
+{
+	memset(&state, 0, sizeof(XINPUT_STATE));
+	XInputGetState(dwResult, &state);
+	return state;
+}
+
+void cInputMgr::Vibrate(int left, int right)
+{
+	XINPUT_VIBRATION vibration;
+	memset(&vibration, 0, sizeof(XINPUT_VIBRATION));
+
+	vibration.wLeftMotorSpeed = (left * 65535);
+	vibration.wRightMotorSpeed = (right * 65535);
+
+	XInputSetState(dwResult, &vibration);
+}
+

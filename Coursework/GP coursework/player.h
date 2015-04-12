@@ -73,6 +73,7 @@ public:
 	void moveLeft();		//move the player left/right
 	void moveRight();			
 	void throwRock();		//throw rocks
+	void setRotation();
 	void reset();			//reset to default values
 	void setLimits(int min, int max);
 };

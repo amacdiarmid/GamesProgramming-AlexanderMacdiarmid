@@ -6,9 +6,10 @@ class Button : public cSprite
 {
 private:
 	bool pressed;
+	char controllerButton;
 
 public:
-	Button();
+	Button(char tButton);
 	~Button();
 
 	void update(float deltaTime)override;

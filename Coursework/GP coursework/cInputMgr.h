@@ -8,6 +8,9 @@ cInputMgr.h
 #ifndef _CINPUTMGR_H
 #define _CINPUTMGR_H
 #include "GameConstants.h"
+#include <Xinput.h>
+
+#pragma comment(lib, "Xinput9_1_0.lib")
 
 class cInputMgr
 {
@@ -21,6 +24,10 @@ private:
 	bool rightMouseBtn;           // true if right mouse button down
 
 	static cInputMgr* pInstance;
+
+	//controller stuff
+	DWORD dwResult;
+	XINPUT_STATE state;
 
 public:
 	static cInputMgr* getInstance();
@@ -48,6 +55,14 @@ public:
 	bool getLeftMouseBtn();						// Return state of left mouse button.
 	bool getMiddleMouseBtn();					// Return state of middle mouse button.
 	bool getRightMouseBtn();					// Return state of right mouse button.
+
+	//controller stuff
+	bool detectController();
+	XINPUT_STATE getController();
+	void Vibrate(int left, int right);
+	void getLAxis();
+	void getRAxis();
+	
 
 };
 

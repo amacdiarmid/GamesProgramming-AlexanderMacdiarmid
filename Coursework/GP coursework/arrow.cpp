@@ -70,3 +70,9 @@ void arrow::reset()
 	arrowLength = 0;
 	spriteRotation = 0;
 }
+
+void arrow::setRotation(int angle)
+{
+	spriteRotation = -angle;
+}
+
