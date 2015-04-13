@@ -167,4 +167,7 @@
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Debug\OpenAL32.dll" />
+  </ItemGroup>
 </Project>

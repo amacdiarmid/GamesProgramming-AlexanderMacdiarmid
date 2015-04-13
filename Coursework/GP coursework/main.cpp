@@ -78,7 +78,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	int difficulty = 1;
 	LPCSTR walls[] = { "Images\\wall texture easy.png", "Images\\wall texture medium.png", "Images\\wall texture hard.png" };
 	LPCSTR fonts[] = { "Fonts\\micross.ttf" };
-	LPCSTR sounds[] = { "Audio\\Kalimba.mp3", "Audio\\Rock on wall.mp3", "Audio\\bone break.mp3" };
+	LPCSTR sounds[] = { "Audio\\Kalimba.wav", "Audio\\Rock on wall.wav", "Audio\\bone break.wav" };
 
 	// Load Sound
 	theSoundMgr->add("Theme", sounds[0]);

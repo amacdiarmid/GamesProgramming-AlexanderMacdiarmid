@@ -128,6 +128,9 @@
     <Image Include="Images\wall texture hard.png" />
     <Image Include="Images\wall texture medium.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Debug\OpenAL32.dll" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
