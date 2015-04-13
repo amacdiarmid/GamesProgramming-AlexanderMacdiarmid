@@ -8,8 +8,9 @@ using namespace std;
 //constructor
 player::player()
 {
-	cout << "should not be called";
 }
+
+//custom contructor for the player name
 player::player(string name)
 {
 	cSprite::spritePos2D.x = 0.0f;
@@ -33,7 +34,6 @@ player::player(string name)
 //destructor
 player::~player()
 {
-	cout << "destructor for the " << playerName << " object"<<endl;
 }
 
 //accessor methods 
@@ -74,15 +74,23 @@ bool player::getDead()
 {
 	return dead;
 }
+//return the accuracy as a score;
+string player::getScore()
+{
+	return to_string((3 / throws) * 100);
+}
 
 //message methods
+//player has been killed
 void player::messagePlayerWin(string name)
 {
-	m_InputMgr->Vibrate(1,1);
+	m_InputMgr->Vibrate(1,1,1);
 	output = name + " Killed " + playerName;
 	showOutput = true;
 	dead = true;
 }
+
+//player has been hit by rock
 void player::messagePlayerHit(string name)
 {
 	health--;
@@ -92,7 +100,7 @@ void player::messagePlayerHit(string name)
 	}
 	else
 	{
-		m_InputMgr->Vibrate(1,1);
+		m_InputMgr->Vibrate(1,0, 0.5f);
 		output = name + " Hit " + playerName;
 		showOutput = true;
 	}
@@ -103,6 +111,7 @@ void player::attachInputMgr(cInputMgr* inputMgr)
 {
 	m_InputMgr = inputMgr;
 }
+//create arrow sprite for player
 void player::attachArrowSprite()
 {
 	//arrow
@@ -121,8 +130,10 @@ void player::attatchFontmgr(cFontMgr* fontMgr)
 //update
 void player::update(float deltaTime)
 {
+	//if it is the current players turn
 	if (active == true)
 	{
+		//if the correct virtual key or gamepad button has been pressed
 		//move left and right 
 		if (m_InputMgr->isKeyDown('D') || m_InputMgr->getController().Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
 		{
@@ -155,7 +166,7 @@ void player::update(float deltaTime)
 		{
 			throwRock();
 		}
-		//set the angle
+		//if a controller had ben detected
 		if (m_InputMgr->detectController() == true)
 		{
 			setRotation();
@@ -164,6 +175,7 @@ void player::update(float deltaTime)
 
 	updateBoundingRect();
 
+	//if a rock has been thrown call its update
 	if (rockThrown == true)
 	{
 		thrownRock.update(deltaTime);
@@ -198,6 +210,7 @@ void player::render()
 	glPopMatrix();
 
 	arrowSprite.render();
+	//if a player has thrown a rock render it 
 	if (rockThrown == true)
 	{
 		thrownRock.render();
@@ -209,6 +222,7 @@ void player::render()
 }
 
 //action methods
+//rotate the angle of the arrow
 void player::angleUp()
 {
 	angle++;
@@ -227,6 +241,7 @@ void player::angleDown()
 		angle += 360;
 	}
 }
+//change the size of the arrow
 void player::powerUp()
 {
 	if (power < 500)
@@ -243,6 +258,7 @@ void player::powerDown()
 		arrowSprite.setSpriteLength(1.0f);
 	}
 }
+//move the pplayer and arrow
 void player::moveLeft()
 {
 	if (getSpritePos().x > minX)
@@ -261,6 +277,7 @@ void player::moveRight()
 	}
 }
 
+//set the angle of the arrow to the 
 void player::setRotation()
 {
 	XINPUT_STATE state = m_InputMgr->getController();
@@ -275,11 +292,14 @@ void player::setRotation()
 
 	float normalisedMagnitude = 0;
 
+	//see if the stick is out the dead zone
 	if (magnitude > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 	{
+		//calculate the angle of the stick using tan
 		int tAngle;
 		tAngle = atan(normalisedLY / normalisedLX) * 180 / PI;
 		
+		//change the amout that the angle is at because te equation will only output an awnser between -90 and 90  so it need to be adjusted acording to where is is pointing
 		if (normalisedLX > 0 && normalisedLY > 0)
 		{
 			//0-90
@@ -300,23 +320,27 @@ void player::setRotation()
 			//90-180
 			angle = tAngle + 90;
 		}
-
-		cout << angle << endl;
+		//remove 90 because in the getinfo() it will add 90 because of the keybioard
 		angle - 90;
 		arrowSprite.setRotation(angle);
 	}
 	else
 	{
+		//reset the values
 		magnitude = 0;
 		normalisedMagnitude = 0;
 	}
 }
 
+//the rock has been thrown
 void player::throwRock()
 {
+	//set the vibrale on its lowest setting for 0.1 seconds
+	m_InputMgr->Vibrate(0, 1, 0.1f);
 	throws++;
 	rockThrown = true;
 	showOutput = false;
+	//create rock sprite
 	cTexture *playerRock = new cTexture();
 	playerRock->createTexture("Images\\rock texture.png");
 	thrownRock.setSpritePos(glm::vec2(getSpritePos().x, getSpritePos().y - (textureHeight / 2)));
@@ -326,9 +350,8 @@ void player::throwRock()
 	thrownRock.setMdlRadius();
 	thrownRock.throwIt(angle, power, spritePos2D);
 	active = false;
-	m_InputMgr->Vibrate(65535/100, 65535/100);
 }
-
+//reset the player values and position
 void player::reset()
 {
 	throws = 0;
@@ -344,6 +367,7 @@ void player::reset()
 	showOutput = false;
 }
 
+//set the player movement limits
 void player::setLimits(int min, int max)
 {
 	minX = min;

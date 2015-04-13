@@ -51,6 +51,7 @@ public:
 	rock* getRock();
 	string getInfo();
 	bool getDead();
+	string getScore();
 
 	//message methods
 	void messagePlayerWin(string);	//display message on player win

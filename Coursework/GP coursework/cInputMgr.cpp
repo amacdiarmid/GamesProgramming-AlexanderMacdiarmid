@@ -247,6 +247,7 @@ bool cInputMgr::getRightMouseBtn()
 
 //controller stuff
 
+//see if ther is a controller connected
 bool cInputMgr::detectController()
 {
 	ZeroMemory(&state, sizeof(XINPUT_STATE));
@@ -254,15 +255,14 @@ bool cInputMgr::detectController()
 	if (dwResult == ERROR_SUCCESS)
 	{
 		return true;
-		cout << "detect Controller \n";
 	}
 	else
 	{
 		return false;
-		cout << "no controller \n";
 	}
 }
 
+//get the controller state
 XINPUT_STATE cInputMgr::getController()
 {
 	memset(&state, 0, sizeof(XINPUT_STATE));
@@ -270,7 +270,8 @@ XINPUT_STATE cInputMgr::getController()
 	return state;
 }
 
-void cInputMgr::Vibrate(int left, int right)
+//set the valuses of the controllers rumbles and the time the controller will rumble for
+void cInputMgr::Vibrate(int left, int right, float time)
 {
 	XINPUT_VIBRATION vibration;
 	memset(&vibration, 0, sizeof(XINPUT_VIBRATION));
@@ -279,5 +280,19 @@ void cInputMgr::Vibrate(int left, int right)
 	vibration.wRightMotorSpeed = (right * 65535);
 
 	XInputSetState(dwResult, &vibration);
+
+	timer = time;
 }
 
+//the count down timer for the length of the rumble 
+void cInputMgr::vibrateTimer(float deltaTime)
+{
+	if (timer > 0.0f)
+	{
+		timer -= deltaTime;
+	}
+	else
+	{
+		Vibrate(0, 0, 0);
+	}
+}

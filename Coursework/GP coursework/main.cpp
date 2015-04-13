@@ -21,12 +21,12 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int cmdShow)
 {
-	
+	/*
 	//for debug
 	AllocConsole();
 	AttachConsole(GetCurrentProcessId());
 	freopen("CON", "w", stdout);
-	
+	*/
 
     //Set our window settings
     const int windowWidth = 1024;
@@ -78,7 +78,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	int difficulty = 1;
 	LPCSTR walls[] = { "Images\\wall texture easy.png", "Images\\wall texture medium.png", "Images\\wall texture hard.png" };
 	LPCSTR fonts[] = { "Fonts\\micross.ttf" };
-	LPCSTR sounds[] = { "Audio\\Kalimba", "Audio\\Rock on wall", "Audio\\bone break" };
+	LPCSTR sounds[] = { "Audio\\Kalimba.mp3", "Audio\\Rock on wall.mp3", "Audio\\bone break.mp3" };
 
 	// Load Sound
 	theSoundMgr->add("Theme", sounds[0]);
@@ -155,6 +155,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	player1.setMdlRadius();
 	player1.setLimits(0, (windowWidth / 2) - (textureWall->getTWidth() / 2));
 
+	//player 2
 	cTexture *playerText2 = new cTexture();
 	playerText2->createTexture("Images\\man texture.png");
 	player player2("player 2");
@@ -170,7 +171,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	player2.setMdlRadius();
 	player2.setLimits((windowWidth / 2) + (textureWall->getTWidth() / 2), windowWidth);
 
-	gameScene theGameMgr(&player1, &player2, &spriteWall, theSoundMgr, windowWidth, windowHeight, []() { cout << "test"; });
+	//create game scene and attatch players and sprites
+	gameScene theGameMgr(&player1, &player2, &spriteWall, theSoundMgr, windowWidth, windowHeight);
 	
 	//This is the mainloop, we render frames until isRunning returns false
 	while (pgmWNDMgr->isWNDRunning())
@@ -183,23 +185,29 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		//render background
 		spriteBkgd.render();
 
-		
-
+		//if the main menu is currently active
 		if (theGameMgr.mainMenu() == true)
 		{
 			//show menu
 			if (playButton.getPressed() == true)
 			{
 				theGameMgr.setMain();
+				playButton.setPressed(false);
 			}
 			else
 			{
+				//render buttons
 				playButton.update(elapsedTime);
 				playButton.render();
+				theFontMgr->getFont("micross")->printText("2 hoodlums over the wall", FTPoint(windowWidth / 2 - 100.0f, -windowHeight / 2 + 85.0f, 0.0f));
+				//if there is a connected controller
 				if (theInputMgr->detectController()==true)
 				{
+					//show controller inputs
+					theFontMgr->getFont("micross")->printText("Press A to play", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 + 65.0f, 0.0f));
 					theFontMgr->getFont("micross")->printText("Move: Left and right on the D-pad", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 - 65.0f, 0.0f));
 					theFontMgr->getFont("micross")->printText("Aim: left stick", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 - 85.0f, 0.0f));
 					theFontMgr->getFont("micross")->printText("Power: left and right bumpers", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 - 105.0f, 0.0f));
@@ -207,6 +215,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 				}
 				else
 				{
+					//show keyboard inputs
 					theFontMgr->getFont("micross")->printText("Move: A and D", FTPoint(windowWidth/2 - 50.0f, -windowHeight / 2 - 65.0f, 0.0f));
 					theFontMgr->getFont("micross")->printText("Aim: W and S", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 - 85.0f, 0.0f));
 					theFontMgr->getFont("micross")->printText("Power: Q and E", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 - 105.0f, 0.0f));
@@ -215,29 +224,46 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 			}
 			
 		}
+		//if the replaymenu is active
 		else if (theGameMgr.ReplyMenu() == true)
 		{
-			theFontMgr->getFont("micross")->printText(theGameMgr.getWinner().c_str(), FTPoint(400.0f, -45.0f, 0.0f));
+			//winner text
+			theFontMgr->getFont("micross")->printText(theGameMgr.getWinner().c_str(), FTPoint(300.0f, -45.0f, 0.0f));
+			//if teh replay button is pressed 
 			if (replayButton.getPressed() == true)
 			{
+				//reset the game and characters
 				theGameMgr.setReplay();
 				player1.reset();
 				player2.reset();
+				replayButton.setPressed(false);
 			}
+			//if the quit buton is pressed
 			else if (quitButton.getPressed() == true)
 			{
+				//quit the game
 				return 0;
 			}
+			//else render the buttons
 			else
 			{
+				//if there is a controller detected 
+				if (theInputMgr->detectController() == true)
+				{
+					//show the buttons controls
+					theFontMgr->getFont("micross")->printText("Press A to play and B to quit", FTPoint(windowWidth / 2 - 50.0f, -windowHeight / 2 + 65.0f, 0.0f));
+				}
+				//render the buttons
 				replayButton.update(elapsedTime);
 				replayButton.render();
 				quitButton.update(elapsedTime);
 				quitButton.render();
 			}
 		}
+		//else render the game 
 		else
 		{
+			//render the wall
 			spriteWall.update(elapsedTime);
 			spriteWall.render();
 		
@@ -249,8 +275,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 			player2.update(elapsedTime);
 			player2.render();
 
+			//do the game checks 
 			theGameMgr.checkPlayer();
 
+			//set the timer on the vibrate on the controller
+			theInputMgr->vibrateTimer(elapsedTime);
+
+			//show the current player stats
 			theFontMgr->getFont("micross")->printText(player1.getInfo().c_str(), FTPoint(0.0f, -25.0f, 0.0f));
 			theFontMgr->getFont("micross")->printText(player2.getInfo().c_str(), FTPoint(windowWidth - 430.0f, -25.0f, 0.0f));
 

@@ -14,5 +14,6 @@ public:
 
 	void update(float deltaTime)override;
 	bool getPressed();
+	void setPressed(bool value);
 };
 

@@ -1,5 +1,6 @@
 #include "arrow.h"
 
+//default constructor never called
 arrow::arrow()
 {
 	cSprite::spritePos2D.x = 0.0f;
@@ -10,6 +11,7 @@ arrow::arrow()
 	cSprite::spriteRotation = 0.0f;
 }
 
+//custom constructor to set the position to the player
 arrow::arrow(glm::vec2 playerCen)
 {
 	cSprite::spritePos2D.x = 0.0f;
@@ -22,11 +24,12 @@ arrow::arrow(glm::vec2 playerCen)
 	arrowLength = 0;
 }
 
-
+//default deconstructor
 arrow::~arrow()
 {
 }
 
+//custom renderer to set center at the players center
 void arrow::render()
 {
 	glPushMatrix();
@@ -55,22 +58,28 @@ void arrow::render()
 	glPopMatrix();
 }
 
+//set the rotation and position values to the player position and player angle
 void arrow::setSpriteRotaion(float rotation, glm::vec2 playerCen)
 {
 	spriteRotation += rotation;
 	playerPos = playerCen;
 }
 
+//change the length of the sprite 
 void arrow::setSpriteLength(float length)
 {
 	arrowLength += length;
 }
+
+//reset the arrow to default
 void arrow::reset()
 {
 	arrowLength = 0;
 	spriteRotation = 0;
 }
 
+//set the arrows angle to the paramiter and invere it 
+//called if using a controller
 void arrow::setRotation(int angle)
 {
 	spriteRotation = -angle;

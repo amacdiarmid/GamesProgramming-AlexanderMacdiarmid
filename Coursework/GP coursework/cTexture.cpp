@@ -113,6 +113,7 @@ GLsizei cTexture::getTHeight() 						// Return height of texture;
 	return textureHeight;
 }
 
+//check the current pixel for an alpha channel
 bool cTexture::checkPixel(int x, int y)
 {
 	int index = (x + y * textureWidth) * pitch + 3;

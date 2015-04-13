@@ -327,11 +327,13 @@ void cSprite::renderCollisionBox()
 	glPopMatrix();
 }
 
+//et the texture sizes
 glm::vec2 cSprite::getTextureSize()
 {
 	return glm::vec2(textureWidth, textureHeight);
 }
 
+//the the world coordinates of the sprite
 glm::mat4x4 cSprite::getWorldMatrix()
 {
 	matrix = glm::mat4x4(1);

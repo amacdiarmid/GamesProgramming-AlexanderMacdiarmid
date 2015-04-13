@@ -3,6 +3,7 @@
 #include "player.h"
 #include "wall.h"
 #include "cSoundMgr.h"
+#include "cInputMgr.h"
 #include "rock.h"
 #include <Windows.h>
 #include <functional>
@@ -18,11 +19,10 @@ private:
 	cSoundMgr* theSoundMgr;
 	int windowWidth;
 	int windowHeight;
-	std::function<void()> playButton;
 
 public:
 	gameScene();
-	gameScene(player* P1, player* P2, wall* curWall, cSoundMgr* soundMgr, int winWid, int winHei, std::function<void()> playBut);
+	gameScene(player* P1, player* P2, wall* curWall, cSoundMgr* soundMgr, int winWid, int winHei);
 	~gameScene();
 	
 	//gameloop

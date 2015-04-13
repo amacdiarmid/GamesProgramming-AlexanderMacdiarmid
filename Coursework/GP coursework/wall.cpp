@@ -1,6 +1,6 @@
 #include "wall.h"
 
-
+//default wall constructor 
 wall::wall()
 {
 	cSprite::spritePos2D.x = 0.0f;

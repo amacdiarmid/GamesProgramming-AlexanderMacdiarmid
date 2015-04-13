@@ -1,10 +1,12 @@
 #include "gameScene.h"
 
+//default constructor not called
 gameScene::gameScene()
 {
 }
 
-gameScene::gameScene(player* P1, player* P2, wall* curWall, cSoundMgr* soundMgr, int winWid, int winHei, std::function<void()> playBut)
+//custome constructor containing the player and wall sprites, the soundMgr and the window sizes
+gameScene::gameScene(player* P1, player* P2, wall* curWall, cSoundMgr* soundMgr, int winWid, int winHei)
 {
 	player1 = P1;
 	player2 = P2;
@@ -16,10 +18,12 @@ gameScene::gameScene(player* P1, player* P2, wall* curWall, cSoundMgr* soundMgr,
 	replay = false;
 }
 
+//default constructor
 gameScene::~gameScene()
 {
 }
 
+//if true it will keep the main menu rendering in the main
 bool gameScene::mainMenu()
 {
 	if (menu == true)
@@ -33,6 +37,7 @@ bool gameScene::mainMenu()
 	}
 }
 
+//if true wil will keep rendering the replay menu rendering in the main
 bool gameScene::ReplyMenu()
 {
 	if (replay == true)
@@ -46,6 +51,7 @@ bool gameScene::ReplyMenu()
 	}
 }
 
+//this is the game loop and is checking for player throws and collisions 
 void gameScene::checkPlayer()
 {
 	//do game stuff here
@@ -130,15 +136,16 @@ void gameScene::checkPlayer()
 			player1->setActive(true);
 		}
 	}
-
+	//if either player is dead
 	if (player1->getDead() == true || player2->getDead() == true)
 	{
-		
+		//render the replay menu
 		setReplay();
 	}
 
 }
 
+//change the the bool main
 void gameScene::setMain()
 {
 	if (menu == true)
@@ -151,6 +158,7 @@ void gameScene::setMain()
 	}
 }
 
+//change the bool replay
 void gameScene::setReplay()
 {
 	if (replay == true)
@@ -163,15 +171,16 @@ void gameScene::setReplay()
 	}
 }
 
+//return the winner in the replay menu
 string gameScene::getWinner()
 {
 	if (player1->getDead() == true)
 	{
-		return player2->getName() + " is the winner!";
+		return player2->getName() + " is the winner! with a score of " + player1->getScore();
 	}
 	else if (player2->getDead() == true)
 	{
-		return player1->getName() + " is the winner!";
+		return player1->getName() + " is the winner! with a score of " + player2->getScore();
 	}
 	else
 	{

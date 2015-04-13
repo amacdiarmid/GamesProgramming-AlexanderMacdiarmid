@@ -28,6 +28,7 @@ private:
 	//controller stuff
 	DWORD dwResult;
 	XINPUT_STATE state;
+	float timer;
 
 public:
 	static cInputMgr* getInstance();
@@ -59,9 +60,10 @@ public:
 	//controller stuff
 	bool detectController();
 	XINPUT_STATE getController();
-	void Vibrate(int left, int right);
+	void Vibrate(int left, int right, float time);
 	void getLAxis();
 	void getRAxis();
+	void vibrateTimer(float deltaTime);
 	
 
 };
